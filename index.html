@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player - Spotify Style</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="background-layer">
+        <img src="pic/2.jpg" class="bg-img" alt="Background">
+        <div class="focus-container">
+            <div class="big-clock" id="clock">00:00</div>
+            <div class="date-text" id="date">Checking date...</div>
+            <div class="focus-song" id="focus-song-info">...</div>
+        </div>
+    </div>
+
+    <div class="ui-layer" id="mainInterface">
+        
+        <div class="header">
+            <div class="logo-placeholder">MY MUSIC</div>
+            <input type="text" placeholder="Tìm kiếm bài hát, nghệ sĩ..." class="search-bar">
+            <div class="user-info">Xin chào, User</div>
+        </div>
+
+        <div class="sidebar" id="sidebar-container"></div>
+
+        <div class="main-content">
+            <div class="content-box banner-box" id="playlist-header">
+                <span id="current-playlist-title">Danh sách bài hát</span>
+            </div>
+            
+            <div id="playlist-container"></div>
+        </div>
+
+        <div class="footer-player">
+            <div class="player-left">
+                <div class="song-info">
+                    <div class="song-name-text" id="player-song-name">Chưa chọn bài</div>
+                    <div class="artist-name-text" id="player-artist-name">...</div>
+                </div>
+                <i class="fa-regular fa-heart icon-hover"></i>
+            </div>
+
+            <div class="player-center">
+                <div class="player-controls">
+                    <i class="fa-solid fa-shuffle icon-hover" id="btn-shuffle" title="Trộn bài"></i>
+                    <i class="fa-solid fa-backward-step icon-hover" id="btn-prev"></i>
+                    <button class="btn-play-circle" id="btn-play"><i class="fa-solid fa-play"></i></button>
+                    <i class="fa-solid fa-forward-step icon-hover" id="btn-next"></i>
+                    <i class="fa-solid fa-repeat icon-hover" id="btn-repeat" title="Lặp lại"></i>
+                </div>
+                <div class="playback-bar">
+                    <span class="time-text">0:00</span>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <span class="time-text">0:00</span>
+                </div>
+            </div>
+
+            <div class="player-right">
+                <i class="fa-solid fa-list icon-hover"></i>
+                <div class="volume-control">
+                    <i class="fa-solid fa-volume-high icon-hover"></i>
+                    <div class="volume-bar"><div class="volume-fill"></div></div>
+                </div>
+                <i class="fa-solid fa-expand icon-hover"></i>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio"></audio>
+    <script src="js/data.js"></script>   
+    <script src="js/ui.js"></script>     
+    <script src="js/main.js"></script>
+</body>
+</html>

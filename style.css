@@ -1,0 +1,613 @@
+/* --- CẤU HÌNH CƠ BẢN --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #000;
+}
+
+/* --- BACKGROUND --- */
+.background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+}
+
+.focus-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+}
+
+.big-clock {
+    font-size: 160px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+    user-select: none;
+}
+
+.date-text {
+    font-size: 24px;
+    color: #ddd;
+    font-weight: 300;
+    margin: 15px 0;
+}
+
+.focus-song {
+    font-size: 20px;
+    color: #ff6b00;
+    font-weight: 600;
+    opacity: 0.9;
+    text-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+    max-width: 800px;
+}
+
+/* --- UI GIAO DIỆN --- */
+.ui-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: grid;
+    grid-template-rows: 60px 1fr 90px;
+    grid-template-columns: 240px 1fr;
+    grid-template-areas: "header header" "sidebar main" "footer footer";
+    transition: opacity 0.5s, visibility 0.5s;
+    opacity: 1;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.ui-layer.hide-ui {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* --- HEADER --- */
+.header {
+    grid-area: header;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #333;
+    color: white;
+}
+
+.search-bar {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    width: 300px;
+    outline: none;
+    background: #333;
+    color: white;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    grid-area: sidebar;
+    background-color: #121212;
+    padding: 20px 20px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-right: 1px solid #333;
+    overflow-y: auto;
+}
+
+.playlist-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #b3b3b3;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: 0.2s;
+    position: relative;
+}
+
+.playlist-item:hover {
+    background-color: #282828;
+    color: white;
+}
+
+.playlist-item.active {
+    background-color: #282828;
+    color: white;
+    box-shadow: inset -4px 0 0 #ff6b00;
+}
+
+/* --- MAIN CONTENT --- */
+.main-content {
+    grid-area: main;
+    padding: 30px;
+    overflow-y: auto;
+    background: linear-gradient(to bottom, #1e1e1e, #121212);
+}
+
+.banner-box {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Style cho List dọc (Playlist thường) */
+.song-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #b3b3b3;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+
+.song-box:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.song-box.active {
+    background-color: rgba(255, 107, 0, 0.15);
+    color: #ff6b00;
+    border-color: #ff6b00;
+}
+
+.btn-play-small {
+    background: transparent;
+    color: inherit;
+    border: none;
+    font-size: 16px;
+}
+
+/* --- HOME PAGE STYLE (Spotify Style) --- */
+.hero-banner {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, #ff6b00, #ff9e42);
+    border-radius: 12px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(255, 107, 0, 0.2);
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 25px;
+}
+
+.hero-btn {
+    padding: 12px 32px;
+    background: white;
+    color: #ff6b00;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    width: fit-content;
+    transition: 0.3s;
+}
+
+.hero-btn:hover {
+    transform: scale(1.05);
+}
+
+.section-header {
+    font-size: 22px;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.see-all {
+    font-size: 14px;
+    color: #b3b3b3;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+}
+
+.music-card {
+    background-color: #181818;
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.music-card:hover {
+    background-color: #282828;
+    transform: translateY(-5px);
+}
+
+.card-img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: #333;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+    font-size: 40px;
+    color: #555;
+}
+
+.card-title {
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 5px;
+}
+
+.card-artist {
+    color: #b3b3b3;
+    font-size: 14px;
+}
+
+/* --- PLAYER BAR --- */
+.footer-player {
+    grid-area: footer;
+    background-color: #181818;
+    border-top: 1px solid #282828;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    color: #b3b3b3;
+}
+
+.player-left {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-left: 10px;
+}
+
+.song-name-text {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.artist-name-text {
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.player-center {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 18px;
+    color: #b3b3b3;
+}
+
+.player-controls i:hover {
+    color: white;
+}
+
+.icon-active {
+    color: #ff6b00 !important;
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
+}
+
+.btn-play-circle {
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-play-circle i {
+    font-size: 30px;
+    color: #ff6b00;
+    transition: 0.1s;
+    width: 40px;
+    text-align: center;
+}
+
+.btn-play-circle:hover i {
+    transform: scale(1.1);
+}
+
+.playback-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 4px;
+    background-color: #4d4d4d;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background-color: #ff6b00;
+    border-radius: 2px;
+}
+
+.player-right {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    padding-right: 10px;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100px;
+}
+
+.volume-bar {
+    flex-grow: 1;
+    height: 4px;
+    background-color: #4d4d4d;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.volume-fill {
+    width: 50%;
+    height: 100%;
+    background-color: #ff6b00;
+    border-radius: 2px;
+}
+
+/* --- CUSTOM SCROLLBAR (THANH CUỘN) --- */
+
+/* 1. Dành cho Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của thanh cuộn (nhỏ gọn) */
+}
+
+/* Màu nền của rãnh cuộn (Trùng màu nền web) */
+::-webkit-scrollbar-track {
+    background: #121212; 
+}
+
+/* Thanh kéo (Phần di chuyển) */
+::-webkit-scrollbar-thumb {
+    background-color: #555; /* Màu xám tối */
+    border-radius: 4px; /* Bo tròn 2 đầu */
+    border: 2px solid #121212; /* Tạo khoảng hở viền cho đẹp */
+}
+
+/* Khi di chuột vào thanh kéo */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #888; /* Sáng hơn chút */
+}
+
+/* Nếu bạn muốn thanh cuộn màu CAM cho nổi bật thì dùng đoạn dưới này:
+::-webkit-scrollbar-thumb:hover {
+    background-color: #ff6b00;
+}
+*/
+
+
+/* 2. Dành cho Firefox (Firefox dùng mã riêng) */
+* {
+    scrollbar-width: thin; /* Thanh cuộn mỏng */
+    scrollbar-color: #555 #121212; /* Màu thanh - Màu nền */
+}
+
+/* --- BỔ SUNG CHO TRANG NGHỆ SĨ FULL --- */
+
+/* Nút hành động (Play + Follow) */
+.artist-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.follow-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: 0.2s;
+}
+.follow-btn:hover { border-color: white; transform: scale(1.05); }
+
+/* Fan cũng thích (Ảnh tròn) */
+.circle-img {
+    border-radius: 50% !important; /* Ghi đè style vuông cũ */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+.center-text {
+    text-align: center;
+}
+
+/* Khoảng cách giữa các phần */
+.section-heading {
+    margin-top: 40px; /* Cách xa phần trên một chút */
+    margin-bottom: 20px;
+    color: white;
+
+}
+
+/* --- TÌM ĐOẠN NÀY TRONG style.css --- */
+
+/* --- TÌM ĐOẠN NÀY TRONG style.css --- */
+
+.artist-header {
+    width: 100%;
+    
+    /* --- SỬA DÒNG NÀY --- */
+    /* Thay vì cố định 350px, hãy để nó tự giãn theo tỷ lệ ảnh */
+    height: 60vh; /* Chiếm 60% chiều cao màn hình (khoảng 600-700px) */
+    
+    /* Hoặc dùng tỷ lệ cố định nếu muốn chính xác như ảnh gốc */
+    /* aspect-ratio: 16/9; height: auto; */
+
+    position: relative;
+    background-size: cover;
+    
+    /* Căn chỉnh để thấy mặt Sơn Tùng rõ nhất */
+    background-position: center 20%; 
+    
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+    padding: 30px;
+    overflow: hidden;
+}
+
+/* --- SỬA LẠI AVATAR NGHỆ SĨ --- */
+.artist-avatar {
+    width: 180px;       /* Kích thước cố định (bạn có thể chỉnh 150px hoặc 200px tùy thích) */
+    height: 180px;      /* Phải bằng width để ra hình tròn */
+    
+    border-radius: 50%; /* Bo tròn tuyệt đối */
+    object-fit: cover;  /* Cắt ảnh vừa khít khung tròn mà không bị méo */
+    
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5); /* Đổ bóng cho nổi bật */
+    border: 4px solid #121212; /* Viền trùng màu nền để tách biệt với banner */
+    
+    flex-shrink: 0; /* Đảm bảo ảnh không bị bóp méo khi màn hình nhỏ */
+}
+
+.artist-details{
+    color: white;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5), 0 0 6px rgba(255, 255, 255, 0.25);
+}
+
+/* --- NÚT PLAY TRANG NGHỆ SĨ (Viền Đen + Bóng Đen) --- */
+.artist-play-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: #ff6b00; /* Nền cam */
+    
+    /* --- SỬA DÒNG NÀY: VIỀN ĐEN --- */
+    border: 2.5px solid #000000; /* Viền đen đậm (3px cho rõ) */
+    
+    /* Đổ bóng đen */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.artist-play-btn i {
+    font-size: 22px;
+    color: black; /* Icon bên trong cũng màu đen cho đồng bộ */
+    margin-left: 4px;
+}
+
+/* Hiệu ứng khi di chuột */
+.artist-play-btn:hover {
+    transform: scale(1.1);
+    background-color: #ff8533;
+    border-color: #1a1a1a; /* Viền đen nhạt hơn xíu khi hover (tùy chọn) */
+}
+
+.artist-play-btn:active {
+    transform: scale(0.95);
+}
