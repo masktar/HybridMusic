@@ -18,7 +18,7 @@ function renderSidebar() {
     homeDiv.onclick = () => switchPlaylist('home');
     sidebarContainer.appendChild(homeDiv);
 
-    // Các mục khác
+    // Các mục Playlist/Artist
     for (let key in allPlaylists) {
         if (key === 'home') continue;
         const playlist = allPlaylists[key];
@@ -31,23 +31,51 @@ function renderSidebar() {
     }
 }
 
-// ================= 2. VẼ TRANG CHỦ (HOME) - ĐÃ SỬA =================
+// ================= 2. VẼ TRANG CHỦ (HOME) =================
 function renderHomePage() {
-    const homeHTML = `
+    let homeHTML = `
         <div class="hero-banner">
             <div class="hero-title">Your Music<br>Your Vibes</div>
             <div class="hero-subtitle">Nghe nhạc không giới hạn.</div>
-            <button class="hero-btn" onclick="playRandom()">Phát Ngẫu Nhiên</button>
+            <button class="hero-btn" onclick="playRandomAndExpand()">Phát Ngẫu Nhiên</button>
         </div>
         
-        <div class="section-header"><span>Khám phá</span></div>
+        <div class="section-header"><span>Gợi ý cho bạn</span></div>
+        <div class="song-grid-horizontal" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; margin-bottom: 40px;">
+    `;
+
+    // 2. Vòng lặp vẽ các bài hát trong playlist Home
+    // Lưu ý: currentPlaylist lúc này chính là danh sách songs bạn vừa thêm ở data.js
+    if (currentPlaylist && currentPlaylist.length > 0) {
+        homeHTML += currentPlaylist.map((song, index) => `
+            <div class="music-card" onclick="playSpecificSong(${index}); openNowPlaying();" style="cursor: pointer;">
+                <div class="card-img" style="position: relative; aspect-ratio: 1/1;">
+                    <img src="${song.img || 'pic/disk.png'}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+                    <div style="position:absolute; bottom:10px; right:10px; background:#cc5600; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.5);">
+                        <i class="fa-solid fa-play" style="color:black; font-size:16px;"></i>
+                    </div>
+                </div>
+                <div class="card-title" style="margin-top:10px; font-weight:600;">${song.name}</div>
+                <div class="card-artist" style="font-size:14px; opacity:0.7;">${song.artist}</div>
+            </div>
+        `).join('');
+    } else {
+        homeHTML += `<div style="opacity:0.5;">Chưa có bài hát nào trong Home. Hãy thêm vào data.js</div>`;
+    }
+
+    homeHTML += `</div>`; // Đóng thẻ div song-grid
+
+    // 3. Phần Khám phá Nghệ sĩ (Giữ nguyên)
+    homeHTML += `
+        <div class="section-header"><span>Khám phá Nghệ sĩ & Playlist</span></div>
         <div class="card-grid" id="home-grid"></div>
         <div style="height: 50px;"></div>
     `;
+
     playlistContainer.innerHTML = homeHTML;
 
+    // 4. Vẽ các thẻ Nghệ sĩ/Playlist bên dưới
     const gridEl = document.getElementById('home-grid');
-
     for (let key in allPlaylists) {
         if (key === 'home') continue;
 
@@ -55,23 +83,13 @@ function renderHomePage() {
         const card = document.createElement('div');
         card.classList.add('music-card');
 
-        // --- LOGIC XỬ LÝ ẢNH TRÒN/VUÔNG ---
-        const isArtist = data.type === 'artist'; // Kiểm tra xem có phải ca sĩ không
-        
-        // 1. Nếu là Artist thì bo tròn 50%, Playlist thì bo nhẹ 4px
+        const isArtist = data.type === 'artist'; 
         const imgRadius = isArtist ? '50%' : '4px';
-        
-        // 2. Quan trọng: Nếu là Artist thì phải ẨN BACKGROUND của khung đi để không bị lòi màu xám ra
         const bgStyle = isArtist ? 'background: transparent; box-shadow: none;' : 'background: #333;';
 
-        let imgHtml = '';
-        if (data.avatar) {
-            // Có ảnh (Sơn Tùng, Vũ...)
-            imgHtml = `<img src="${data.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:${imgRadius};">`;
-        } else {
-            // Không ảnh (Playlist Lofi...)
-            imgHtml = `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:40px;">${data.icon}</div>`;
-        }
+        let imgHtml = data.avatar 
+            ? `<img src="${data.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:${imgRadius};">`
+            : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:40px;">${data.icon}</div>`;
 
         card.innerHTML = `
             <div class="card-img" style="${bgStyle}">
@@ -86,10 +104,9 @@ function renderHomePage() {
     }
 }
 
-// ================= 3. VẼ TRANG NGHỆ SĨ - ĐÃ SỬA =================
+// ================= 3. VẼ TRANG NGHỆ SĨ (ARTIST) =================
 function renderArtistPage(data) {
-    
-    // --- BƯỚC 1: Header ---
+    // A. Header
     let headerStyle = "";
     if (data.banner) {
         let pos = data.bannerPos || "center center";
@@ -100,7 +117,6 @@ function renderArtistPage(data) {
         headerStyle = `background: ${color};`;
     }
 
-    // --- BƯỚC 2: Tạo HTML ---
     const artistHTML = `
         <div class="artist-header" style="${headerStyle}">
             <div class="artist-info-container">
@@ -135,13 +151,12 @@ function renderArtistPage(data) {
                 </div>
             `).join('') : '<span style="opacity:0.5; padding-left:15px;">Chưa có đề xuất</span>'}
         </div>
-
         <div style="height: 50px;"></div> 
     `;
 
     playlistContainer.innerHTML = artistHTML;
 
-    // --- BƯỚC 3: Vẽ bài hát ---
+    // B. Danh sách bài hát (Bấm vào đây CHỈ PHÁT NHẠC, không đổi trang)
     const listContainer = document.getElementById('artist-song-list');
     const topSongs = data.songs; 
 
@@ -162,12 +177,57 @@ function renderArtistPage(data) {
             </div>
             <span style="font-size:12px; opacity:0.6;">3:45</span>
         `;
+        // Quan trọng: Chỉ gọi playSpecificSong (chỉ phát nhạc)
         div.onclick = () => playSpecificSong(index);
         listContainer.appendChild(div);
     });
 }
 
-// ================= 4. CÁC HÀM PHỤ TRỢ =================
+// ================= 4. VẼ GIAO DIỆN CHI TIẾT BÀI HÁT (NOW PLAYING) =================
+function renderSongDetailPage(song, artistData) {
+    // Logic lấy ảnh: Cover bài hát -> Avatar ca sĩ -> Đĩa mặc định
+    let coverImg = song.img || (artistData ? artistData.avatar : '') || "pic/disk.png";
+    
+    // Logic lấy màu nền
+    let bgStyle = artistData && artistData.bgColor 
+        ? `background: ${artistData.bgColor};` 
+        : `background: linear-gradient(to bottom, #2c3e50, #000000);`;
+
+    const detailHTML = `
+        <div class="song-detail-page" style="${bgStyle} width:100%; min-height:100%; padding: 40px; box-sizing: border-box; display:flex; flex-direction:column; align-items:center; animation: fadeIn 0.3s;">
+            
+            <div style="width:100%; display:flex; justify-content:space-between; margin-bottom: 20px;">
+                <button onclick="restorePreviousView()" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div style="text-transform:uppercase; font-size:12px; letter-spacing:1px; margin-top:10px;">ĐANG PHÁT</div>
+                <div style="width:20px;"></div>
+            </div>
+
+            <div class="disk-container" style="width: 300px; height: 300px; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
+                <img src="${coverImg}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            </div>
+
+            <div style="text-align:center; margin-bottom:30px;">
+                <h1 style="font-size:28px; margin-bottom:10px;">${song.name}</h1>
+                <h3 style="font-size:18px; color:#ccc; font-weight:400;">${song.artist}</h3>
+            </div>
+
+            <div class="lyrics-container" style="width:100%; max-width:600px; background:rgba(0,0,0,0.2); padding:20px; border-radius:12px; height:250px; overflow-y:auto;">
+                <h4 style="margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px; font-weight:bold;">Lời bài hát</h4>
+                <p style="line-height:1.8; color:#ddd; font-size:16px;">
+                    (Lời bài hát đang được cập nhật...)<br>
+                    🎵 Lắng nghe giai điệu này...<br>
+                    🎵 Cảm nhận cảm xúc...<br>
+                    ...
+                </p>
+            </div>
+        </div>
+    `;
+    playlistContainer.innerHTML = detailHTML;
+}
+
+// ================= 5. CÁC HÀM HỖ TRỢ KHÁC =================
 function renderSectionGrid(title, items) {
     if (!items || items.length === 0) return "";
     return `
@@ -186,7 +246,6 @@ function renderSectionGrid(title, items) {
     `;
 }
 
-// ================= 5. DANH SÁCH DỌC =================
 function renderVerticalList() {
     playlistContainer.innerHTML = '';
     renderListItems(playlistContainer);

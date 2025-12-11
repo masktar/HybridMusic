@@ -5,7 +5,16 @@ const allPlaylists = {
         type: 'home',
         title: "Trang chủ",
         icon: "🏠",
-        songs: []
+        // ĐỔ NHẠC VÀO ĐÂY ĐỂ HIỆN Ở TRANG CHỦ
+        songs: [
+            { name: 'Chắc Ai Đó Sẽ Về', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChacAiDoSeVe.mp3', img: 'pic/st/st1.jpg' },
+            { name: 'Bước Qua Nhau', artist: 'Vũ', src: 'music/vu/BuocQuaNhau.mp3', img: 'pic/vu/vu1.jpg' },
+            { name: 'Có Sao Cũng Đành', artist: 'DatKaa', src: 'music/datkaa/CoSaoCungDanh.mp3', img: 'pic/dk/dk1.jpg' },
+            { name: 'Faded', artist: 'Alan Walker', src: 'music/aw/Faded.mp3', img: 'pic/aw/aw1.jpg' },
+            { name: 'Chúng Ta Không Thuộc Về Nhau', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChungTaKhongThuocVeNhau.mp3', img: 'pic/st/st1.jpg' },
+            { name: 'Đông Kiếm Em', artist: 'Vũ', src: 'music/vu/DongKiemEm.mp3', img: 'pic/vu/vu3.jpg' },
+            // ... Bạn có thể copy thêm bao nhiêu bài tùy thích
+        ]
     },
     // --- js/data.js ---
 
@@ -19,12 +28,12 @@ const allPlaylists = {
 
         // 1. DANH SÁCH BÀI HÁT (Giữ nguyên)
         songs: [
-            { name: 'Chắc Ai Đó Sẽ Về', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChacAiDoSeVe.mp3' },
-            { name: 'Chúng Ta Không Thuộc Về Nhau', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChungTaKhongThuocVeNhau.mp3' },
-            { name: 'Em Của Ngày Hôm Qua', artist: 'Sơn Tùng M-TP', src: 'music/mtp/EmCuaNgayHomQua.mp3' },
-            { name: 'Hãy Trao Cho Anh-Sơn Tùng', artist: 'Sơn Tùng M-TP', src: 'music/mtp/HayTraoChoAnh.mp3' },
-            { name: 'Không Phải Dạng Vừa Đâu', artist: 'Sơn Tùng M-TP', src: 'music/mtp/KhongPhaiDangVuaDau.mp3' },
-            { name: 'Nắng Ấm Xa Dần', artist: 'Sơn Tùng M-TP', src: 'music/mtp/NangAmXaDan.mp3' },
+            { name: 'Chắc Ai Đó Sẽ Về', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChacAiDoSeVe.mp3' , img: 'pic/st/st1.jpg'},
+            { name: 'Chúng Ta Không Thuộc Về Nhau', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChungTaKhongThuocVeNhau.mp3', img: 'pic/st/st1.jpg' },
+            { name: 'Em Của Ngày Hôm Qua', artist: 'Sơn Tùng M-TP', src: 'music/mtp/EmCuaNgayHomQua.mp3', img: 'pic/st/st2.jpg' },
+            { name: 'Hãy Trao Cho Anh-Sơn Tùng', artist: 'Sơn Tùng M-TP', src: 'music/mtp/HayTraoChoAnh.mp3', img: 'pic/st/st3.jpg' },
+            { name: 'Không Phải Dạng Vừa Đâu', artist: 'Sơn Tùng M-TP', src: 'music/mtp/KhongPhaiDangVuaDau.mp3', img: 'pic/st/st2.jpg' },
+            { name: 'Nắng Ấm Xa Dần', artist: 'Sơn Tùng M-TP', src: 'music/mtp/NangAmXaDan.mp3', img: 'pic/st/st1.jpg' },
 
         ],
 
@@ -64,12 +73,12 @@ const allPlaylists = {
 
         // 1. DANH SÁCH NHẠC (Quan trọng: Bạn phải có file nhạc trong máy)
         songs: [
-            { name: 'Anh Nhớ Ra', artist: 'Vũ', src: 'music/vu/AnhNhoRa.mp3' },
-            { name: 'Bước Qua Nhau', artist: 'Vũ', src: 'music/vu/BuocQuaNhau.mp3' },
-            { name: 'Dành Hết Xuân Thì Để Chờ Nhau', artist: 'Vũ', src: 'music/vu/DanhHetXuanThiDeChoNhau.mp3' },
-            { name: 'Đông Kiếm Em', artist: 'Vũ', src: 'music/vu/DongKiemEm.mp3' },
-            { name: 'Những Lời Hứa Bỏ Quên', artist: 'Vũ', src: 'music/vu/NhungLoiHuaBoQuen.mp3' },
-            { name: 'Vì Anh Đâu Có Biết', artist: 'Vũ', src: 'music/vu/ViAnhDauCoBiet' },
+            { name: 'Anh Nhớ Ra', artist: 'Vũ', src: 'music/vu/AnhNhoRa.mp3' , img: 'pic/vu/vu1.jpg'},
+            { name: 'Bước Qua Nhau', artist: 'Vũ', src: 'music/vu/BuocQuaNhau.mp3' , img: 'pic/vu/vu1.jpg'},
+            { name: 'Dành Hết Xuân Thì Để Chờ Nhau', artist: 'Vũ', src: 'music/vu/DanhHetXuanThiDeChoNhau.mp3', img: 'pic/vu/vu2.jpg' },
+            { name: 'Đông Kiếm Em', artist: 'Vũ', src: 'music/vu/DongKiemEm.mp3' , img: 'pic/vu/vu3.jpg'},
+            { name: 'Những Lời Hứa Bỏ Quên', artist: 'Vũ', src: 'music/vu/NhungLoiHuaBoQuen.mp3' , img: 'pic/vu/vu4.jpg'},
+            { name: 'Vì Anh Đâu Có Biết', artist: 'Vũ', src: 'music/vu/ViAnhDauCoBiet.mp3' , img: 'pic/vu/vu5.jpg'},
 
         ],
 
@@ -104,12 +113,12 @@ const allPlaylists = {
 
         // 1. DANH SÁCH NHẠC (Quan trọng: Bạn phải có file nhạc trong máy)
         songs: [
-            { name: 'Có Sao Cũng Đành', artist: 'DatKaa', src: 'music/datKaa/CoSaoCungDanh.mp3' },
-            { name: 'Chiều Thu Họa Bóng Nàng', artist: 'DatKaa', src: 'music/datKaa/ChieuThuHoaBongNang.mp3' },
-            { name: 'Đớn Đau Vô Cùng', artist: 'DatKaa', src: 'music/datKaa/DonDauVoCung.mp3' },
-            { name: 'Hạ Còn Vương Nắng', artist: 'DatKaa', src: 'music/datKaa/HaConVuongNang.mp3' },
-            { name: 'Mây Hồng Đưa Lối', artist: 'DatKaa', src: 'music/datKaa/MayHongDuaLoi.mp3' },
-            { name: 'Tình Thu Sao Hạ Buồn', artist: 'DatKaa', src: 'music/datKaa/TinhThuSaoHaBuon.mp3' }
+            { name: 'Có Sao Cũng Đành', artist: 'DatKaa', src: 'music/datkaa/CoSaoCungDanh.mp3' , img: 'pic/dk/dk1.jpg'},
+            { name: 'Chiều Thu Họa Bóng Nàng', artist: 'DatKaa', src: 'music/datkaa/ChieuThuHoaBongNang.mp3' , img: 'pic/dk/dk2.jpg'},
+            { name: 'Đớn Đau Vô Cùng', artist: 'DatKaa', src: 'music/datkaa/DonDauVoCung.mp3' , img: 'pic/dk/dk3.jpg'},
+            { name: 'Hạ Còn Vương Nắng', artist: 'DatKaa', src: 'music/datkaa/HaConVuongNang.mp3' , img: 'pic/dk/dk4.jpg'},
+            { name: 'Mây Hồng Đưa Lối', artist: 'DatKaa', src: 'music/datkaa/MayHongDuaLoi.mp3' , img: 'pic/dk/dk5.jpg'},
+            { name: 'Tình Thu Sao Hạ Buồn', artist: 'DatKaa', src: 'music/datkaa/TinhThuSaoHaBuon.mp3' , img: 'pic/dk/dk6.jpg'}
         ],
 
         // 2. ALBUaw
@@ -144,12 +153,12 @@ const allPlaylists = {
 
         // 1. DANH SÁCH NHẠC (Quan trọng: Bạn phải có file nhạc trong máy)
         songs: [
-            { name: 'Alone', artist: 'Alan Walker', src: 'music/aw/Alone.mp3' },
-            { name: 'Faded', artist: 'Alan Walker', src: 'music/aw/Faded.mp3' },
-            { name: 'Ignite', artist: 'Alan Walker, Julie Bergan, K-391, Seung Ri; ', src: 'music/aw/Ignite.mp3' },
-            { name: 'On My Way', artist: 'Alan Walker, Sabrina Carpenter, Farruko', src: 'music/aw/OnMyWay.mp3' },
-            { name: 'Sing Me To Sleep', artist: 'Alan Walker', src: 'music/aw/SingMeToSleep.mp3' },
-            { name: 'Unity', artist: 'The Walkers, Alan Walker, Sapphire', src: 'music/aw/Unity.mp3' },
+            { name: 'Alone', artist: 'Alan Walker', src: 'music/aw/Alone.mp3' , img: 'pic/aw/aw1.jpg'},
+            { name: 'Faded', artist: 'Alan Walker', src: 'music/aw/Faded.mp3' , img: 'pic/aw/aw1.jpg'},
+            { name: 'Ignite', artist: 'Alan Walker, Julie Bergan, K-391, Seung Ri; ', src: 'music/aw/Ignite.mp3' , img: 'pic/aw/aw2.jpg'},
+            { name: 'On My Way', artist: 'Alan Walker, Sabrina Carpenter, Farruko', src: 'music/aw/OnMyWay.mp3' , img: 'pic/aw/aw3.jpg'},
+            { name: 'Sing Me To Sleep', artist: 'Alan Walker', src: 'music/aw/SingMeToSleep.mp3' , img: 'pic/aw/aw4.jpg'},
+            { name: 'Unity', artist: 'The Walkers, Alan Walker, Sapphire', src: 'music/aw/Unity.mp3' , img: 'pic/aw/aw5.jpg'},
 
         ],
 
