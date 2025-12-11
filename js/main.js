@@ -284,7 +284,7 @@ document.addEventListener('mouseup', () => {
 });
 
 // ================= 5. FOCUS MODE & START =================
-const IDLE_TIME = 10000;
+const IDLE_TIME = 120000;
 let idleTimer;
 const uiLayer = document.getElementById('mainInterface');
 const clockEl = document.getElementById('clock');
