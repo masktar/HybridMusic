@@ -4,10 +4,13 @@ const allPlaylists = {
     'home': {
         type: 'home',
         title: "Trang chủ",
-        icon: "🏠",
+        // icon: "🏠",
         // ĐỔ NHẠC VÀO ĐÂY ĐỂ HIỆN Ở TRANG CHỦ
         songs: [
+            { name: 'Hạ Còn Vương Nắng', artist: 'DatKaa', src: 'music/datkaa/HaConVuongNang.mp3' , img: 'pic/dk/dk4.jpg'},
             { name: 'Chắc Ai Đó Sẽ Về', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChacAiDoSeVe.mp3', img: 'pic/st/st1.jpg' },
+            { name: 'Sing Me To Sleep', artist: 'Alan Walker', src: 'music/aw/SingMeToSleep.mp3' , img: 'pic/aw/aw4.jpg'},
+            { name: 'Unity', artist: 'The Walkers, Alan Walker, Sapphire', src: 'music/aw/Unity.mp3' , img: 'pic/aw/aw5.jpg'},
             { name: 'Bước Qua Nhau', artist: 'Vũ', src: 'music/vu/BuocQuaNhau.mp3', img: 'pic/vu/vu1.jpg' },
             { name: 'Có Sao Cũng Đành', artist: 'DatKaa', src: 'music/datkaa/CoSaoCungDanh.mp3', img: 'pic/dk/dk1.jpg' },
             { name: 'Faded', artist: 'Alan Walker', src: 'music/aw/Faded.mp3', img: 'pic/aw/aw1.jpg' },
@@ -21,7 +24,7 @@ const allPlaylists = {
     'sontung': {
         type: 'artist',
         title: "Sơn Tùng M-TP",
-        icon: "🎤",
+        // icon: "🎤",
         banner: "pic/st/st_ban.jpg",
         avatar: "pic/st/st_ava.jpg",
         listeners: "2,793,004 người nghe hàng tháng",
@@ -62,7 +65,7 @@ const allPlaylists = {
     'vu': {
         type: 'artist',
         title: "Vũ.",
-        icon: "🎸", // Icon cây đàn cho chất Indie
+        // icon: "🎸", // Icon cây đàn cho chất Indie
 
         // Bạn thay bằng ảnh trong máy (pic/vu_banner.jpg) hoặc dùng link này
         banner: "pic/vu/vu_ban.jpg",
@@ -105,7 +108,7 @@ const allPlaylists = {
     'Datkaa': {
         type: 'artist',
         title: "Datkaa.",
-        icon: "🎸", // Icon cây đàn cho chất Indie
+        // icon: "🎸", // Icon cây đàn cho chất Indie
         avatar: "pic/dk/dk_ava.jpg",
 
         listeners: "1,540,291 người nghe hàng tháng",
@@ -144,7 +147,7 @@ const allPlaylists = {
     'Alan Walker': {
         type: 'artist',
         title: "Alan Walker.",
-        icon: "🎸", // Icon cây đàn cho chất Indie
+        // icon: "🎸", // Icon cây đàn cho chất Indie
         avatar: "pic/aw/aw_ava.jpg",
         banner: "pic/aw/aw_ban.jpg",
         bannerPos: "center 25%",
@@ -185,7 +188,7 @@ const allPlaylists = {
     'lofi': {
         type: 'playlist',
         title: "Nhạc Lofi Học Bài",
-        icon: "🎵",
+        // icon: "🎵",
         songs: [
             { name: "Ignite", artist: "K-391", src: "music/1.mp3" },
             { name: "Alone", artist: "Marshmello", src: "music/3.mp3" }
