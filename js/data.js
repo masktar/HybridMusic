@@ -158,7 +158,7 @@ const allPlaylists = {
         songs: [
             { name: 'Alone', artist: 'Alan Walker', src: 'music/aw/Alone.mp3' , img: 'pic/aw/aw1.jpg'},
             { name: 'Faded', artist: 'Alan Walker', src: 'music/aw/Faded.mp3' , img: 'pic/aw/aw1.jpg'},
-            { name: 'Ignite', artist: 'Alan Walker, Julie Bergan, K-391, Seung Ri; ', src: 'music/aw/Ignite.mp3' , img: 'pic/aw/aw2.jpg'},
+            { name: 'Ignite', artist: 'Alan Walker, Julie Bergan, K-391, Seung Ri ', src: 'music/aw/Ignite.mp3' , img: 'pic/aw/aw2.jpg'},
             { name: 'On My Way', artist: 'Alan Walker, Sabrina Carpenter, Farruko', src: 'music/aw/OnMyWay.mp3' , img: 'pic/aw/aw3.jpg'},
             { name: 'Sing Me To Sleep', artist: 'Alan Walker', src: 'music/aw/SingMeToSleep.mp3' , img: 'pic/aw/aw4.jpg'},
             { name: 'Unity', artist: 'The Walkers, Alan Walker, Sapphire', src: 'music/aw/Unity.mp3' , img: 'pic/aw/aw5.jpg'},
