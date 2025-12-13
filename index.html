@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
     <div class="background-layer">
@@ -19,9 +21,12 @@
     </div>
 
     <div class="ui-layer" id="mainInterface">
-        
+
         <div class="header">
-            <div class="logo-placeholder">MY MUSIC</div>
+            <div class="brand-logo-container" onclick="switchPlaylist('home')">
+                <img src="pic/Logo.png" class="my-logo" alt="Logo">
+                <span class="brand-name">HYBRID MUSIC</span>
+            </div>
             <input type="text" placeholder="Tìm kiếm bài hát, nghệ sĩ..." class="search-bar">
             <div class="user-info">Xin chào, User</div>
         </div>
@@ -32,7 +37,7 @@
             <div class="content-box banner-box" id="playlist-header">
                 <span id="current-playlist-title">Danh sách bài hát</span>
             </div>
-            
+
             <div id="playlist-container"></div>
         </div>
 
@@ -55,7 +60,9 @@
                 </div>
                 <div class="playback-bar">
                     <span class="time-text">0:00</span>
-                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
                     <span class="time-text">0:00</span>
                 </div>
             </div>
@@ -64,7 +71,9 @@
                 <i class="fa-solid fa-list icon-hover"></i>
                 <div class="volume-control">
                     <i class="fa-solid fa-volume-high icon-hover"></i>
-                    <div class="volume-bar"><div class="volume-fill"></div></div>
+                    <div class="volume-bar">
+                        <div class="volume-fill"></div>
+                    </div>
                 </div>
                 <i class="fa-solid fa-expand icon-hover"></i>
             </div>
@@ -72,8 +81,9 @@
     </div>
 
     <audio id="audio"></audio>
-    <script src="js/data.js"></script>   
-    <script src="js/ui.js"></script>     
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

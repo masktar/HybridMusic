@@ -314,7 +314,7 @@ document.addEventListener('mousemove', (e) => { if (isDraggingProgress) handlePr
 document.addEventListener('mouseup', () => { isDraggingProgress = false; isDraggingVolume = false; });
 
 // ================= 5. START =================
-const IDLE_TIME = 120000; let idleTimer;
+const IDLE_TIME = 10000; let idleTimer;
 const uiLayer = document.getElementById('mainInterface');
 const clockEl = document.getElementById('clock');
 const dateEl = document.getElementById('date');

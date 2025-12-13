@@ -627,6 +627,19 @@ html {
     width: 100%;
 }
 
+.title-container .card-title {
+    margin :0;
+    line-height: 1.2;
+    padding-top: 2px;
+}
+
+.title-container .heart-btn { 
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transform: translateX(10px);
+}
+
 .horizontal-scroll-container {
     display: flex;           /* Xếp các thẻ nằm ngang */
     gap: 20px;               /* Khoảng cách giữa các thẻ */
@@ -691,3 +704,40 @@ html {
 /* Vị trí nút Trái/Phải */
 .scroll-btn.left { left: -15px; }
 .scroll-btn.right { right: -15px; }
+
+
+/* 1. Khung chứa Logo và Tên */
+.brand-logo-container {
+    display: flex;             /* Xếp ngang hàng */
+    align-items: center;       /* Căn giữa theo chiều dọc */
+    gap: 15px;                 /* Khoảng cách giữa Logo và Chữ */
+    padding: 15px 20px;        /* Căn lề cho thoáng */
+    cursor: pointer;           /* Chỉ tay vào thấy bấm được */
+}
+
+/* 2. Chỉnh kích thước Logo */
+.my-logo {
+    width: 40px;               /* Độ rộng logo (tùy chỉnh to nhỏ ở đây) */
+    height: 40px;
+    object-fit: contain;       /* Đảm bảo ảnh không bị méo */
+    filter: drop-shadow(0 0 5px rgba(255, 85, 0, 0.5)); /* (Tùy chọn) Phát sáng màu cam nhẹ */
+}
+
+/* 3. Chỉnh phông chữ "Hybrid Music" */
+.brand-name {
+    font-size: 22px;           /* Cỡ chữ */
+    font-weight: 800;          /* Chữ đậm */
+    color: white;              /* Màu chữ trắng */
+    letter-spacing: 1px;       /* Giãn chữ ra xíu cho sang */
+    text-transform: uppercase; /* Viết hoa toàn bộ */
+}
+
+/* (Tùy chọn) Hiệu ứng khi di chuột vào Logo */
+.brand-logo-container:hover .my-logo {
+    transform: rotate(-10deg); /* Xoay nhẹ logo cho vui mắt */
+    transition: transform 0.3s;
+}
+.brand-logo-container:hover .brand-name {
+    color: #ff5500;            /* Đổi chữ sang màu cam khi hover */
+    transition: color 0.3s;
+}
