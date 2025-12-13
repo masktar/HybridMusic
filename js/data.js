@@ -187,11 +187,23 @@ const allPlaylists = {
 
     'lofi': {
         type: 'playlist',
-        title: "Nhạc Lofi Học Bài",
-        // icon: "🎵",
+        title: "Lofi Girl Radio",
+        icon: "☕",
         songs: [
-            { name: "Ignite", artist: "K-391", src: "music/1.mp3" },
-            { name: "Alone", artist: "Marshmello", src: "music/3.mp3" }
+            { 
+                name: "lofi hip hop radio - beats to relax/study to", 
+                artist: "Lofi Girl", 
+                // Đây là mã video Live của Lofi Girl
+                youtubeId: "P6Segk8cr-c", 
+                img: "https://i.ytimg.com/vi/P6Segk8cr-c/maxresdefault.jpg" 
+            },
+            { 
+                name: "synthwave radio - beats to chill/game to", 
+                artist: "Lofi Girl", 
+                // Mã video Live thứ 2 (nhạc điện tử)
+                youtubeId: "4xDzrJKXOOY", 
+                img: "https://i.ytimg.com/vi/4xDzrJKXOOY/maxresdefault.jpg" 
+            }
         ]
     },
     // ... Copy hết các playlist còn lại vào đây

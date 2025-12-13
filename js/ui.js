@@ -218,6 +218,34 @@ function renderSongDetailPage(song, artistData) {
     const isLiked = checkIsLiked(song.name);
     const heartClass = isLiked ? 'fa-solid fa-heart heart-btn liked' : 'fa-regular fa-heart heart-btn';
 
+    // 1. QUYẾT ĐỊNH: HIỆN ĐĨA THAN HAY HIỆN YOUTUBE?
+    let visualContent = '';
+    
+    if (song.youtubeId) {
+        // Nếu có Youtube ID -> Hiện khung Video (Iframe)
+        visualContent = `
+            <div class="disk-container" style="width: 100%; max-width: 600px; aspect-ratio: 16/9; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); border-radius: 12px; overflow: hidden;">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/${song.youtubeId}?autoplay=1&controls=1" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        `;
+    } else {
+        // Nếu là nhạc thường -> Hiện đĩa than xoay
+        visualContent = `
+            <div class="disk-container" style="width: 300px; height: 300px; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
+                <img src="${coverImg}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            </div>
+        `;
+    }
+
+    // 2. HTML CHÍNH
     const detailHTML = `
         <div class="song-detail-page" style="${bgStyle} width:100%; min-height:100%; padding: 40px; box-sizing: border-box; display:flex; flex-direction:column; align-items:center; animation: fadeIn 0.3s; border-radius: 20px;">
             <div style="width:100%; display:flex; justify-content:space-between; margin-bottom: 20px;">
@@ -225,9 +253,9 @@ function renderSongDetailPage(song, artistData) {
                 <div style="text-transform:uppercase; font-size:12px; letter-spacing:1px; margin-top:10px; color:#fff; opacity:0.8;">ĐANG PHÁT</div>
                 <div style="width:20px;"></div>
             </div>
-            <div class="disk-container" style="width: 300px; height: 300px; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
-                <img src="${coverImg}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
-            </div>
+
+            ${visualContent}
+
             <div style="text-align:center; margin-bottom:30px;">
                 <div style="display:flex; align-items:center; justify-content:center; gap:15px;">
                     <h1 style="font-size:28px; margin:0; color:#fff;">${song.name}</h1>
@@ -235,10 +263,12 @@ function renderSongDetailPage(song, artistData) {
                 </div>
                 <h3 style="font-size:18px; color:#ccc; font-weight:400; margin-top:10px;">${song.artist}</h3>
             </div>
+            
+            ${song.youtubeId ? '' : `
             <div class="lyrics-container" style="width:100%; max-width:600px; background:rgba(0,0,0,0.2); padding:20px; border-radius:12px; height:250px; overflow-y:auto;">
                 <h4 style="margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px; font-weight:bold; color:#fff;">Lời bài hát</h4>
                 <p style="line-height:1.8; color:#ddd; font-size:16px;">(Lời bài hát đang cập nhật...)<br>🎵 Nhạc hay thì cứ nghe thôi...</p>
-            </div>
+            </div>`}
         </div>
     `;
     playlistContainer.innerHTML = detailHTML;

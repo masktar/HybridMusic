@@ -111,13 +111,23 @@ function scrollToTop() {
 }
 function playSpecificSong(index) {
     songIndex = index;
-    loadSong(currentPlaylist[songIndex]);
-    playSong();
+    const currentSong = currentPlaylist[songIndex];
 
-    // Highlight bài đang phát
-    if (allPlaylists[currentKey].type === 'artist') renderArtistPage(allPlaylists[currentKey]);
-    else if (allPlaylists[currentKey].type !== 'home' && currentKey !== 'favorites') renderVerticalList();
-    // Lưu ý: Home và Favorites không cần vẽ lại highlight list vì chúng dùng giao diện Grid/Custom
+    // 1. Nạp thông tin bài hát (Load tên, ảnh, video...)
+    loadSong(currentSong);
+
+    // 2. LOGIC QUAN TRỌNG: Chỉ phát nhạc MP3 nếu KHÔNG PHẢI là YouTube
+    if (!currentSong.youtubeId) {
+        playSong();
+    } 
+    // (Nếu là YouTube thì loadSong đã tự lo việc hiện video rồi, không cần playSong nữa)
+
+    // 3. Cập nhật giao diện danh sách (Highlight)
+    if (allPlaylists[currentKey].type === 'artist') {
+        renderArtistPage(allPlaylists[currentKey]);
+    } else if (allPlaylists[currentKey].type !== 'home' && currentKey !== 'favorites') {
+        renderVerticalList();
+    }
 }
 
 function playRandomAndExpand() {
@@ -150,8 +160,18 @@ function restorePreviousView() { switchPlaylist(currentKey); }
 function loadSong(song) {
     songNameEl.innerText = song.name;
     artistNameEl.innerText = song.artist;
-    audio.src = song.src;
     if (focusSongEl) focusSongEl.innerText = `Đang phát: ${song.name} - ${song.artist}`;
+
+    if(song.youtubeId){
+        audio.pause();
+        audio.src = ""; 
+        playIcon.className = 'fa-solid fa-play'; // <--- CHUẨN: fa-solid (không phải fa-soild)
+        
+        openNowPlaying();
+    }
+    else{
+        audio.src = song.src;
+    } 
 }
 
 function playSong() { isPlaying = true; audio.play(); playIcon.className = 'fa-solid fa-pause'; }
@@ -323,5 +343,32 @@ setInterval(updateClock, 1000);
 function goFocus() { if (uiLayer) uiLayer.classList.add('hide-ui'); }
 function wakeUp() { if (uiLayer) uiLayer.classList.remove('hide-ui'); clearTimeout(idleTimer); idleTimer = setTimeout(goFocus, IDLE_TIME); }
 
-window.onload = () => { switchPlaylist('home'); updateClock(); wakeUp(); audio.volume = 0.5; volumeFill.style.width = '50%'; };
+function updateGreeting() {
+    const greetingEl = document.getElementById('user-greeting');
+    if(!greetingEl) return;
+
+    const hour = new Date().getHours(); // Lấy giờ hiện tại (0 - 23)
+    let text = "";
+    let icon = "";
+
+    if(hour >= 5 && hour < 12) {
+        text = "Chào buổi sáng";
+        icon = "☀️";
+    }
+    else if (hour >= 12 && hour < 18) {
+        text = "Chiều rồi, thư giãn nhé";
+        icon = "🌤️";
+    }
+    else if (hour >= 18 && hour < 23) {
+        text = "Buổi tối vui vẻ";
+        icon = "🌙"; 
+    }
+    else {
+        text = "Khuya rồi, làm tí Lofi nhé";
+        icon = "🦉"; 
+    }
+    greetingEl.innerHTML = `${icon} ${text}, User`;
+}
+
+window.onload = () => { switchPlaylist('home'); updateClock(); wakeUp(); audio.volume = 0.5; volumeFill.style.width = '50%'; updateGreeting();};
 document.onmousemove = wakeUp; document.onkeypress = wakeUp; document.onclick = wakeUp;
