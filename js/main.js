@@ -1,47 +1,66 @@
-// --- js/main.js ---
+// ====================================================
+// FILE: js/main.js
+// PHIÊN BẢN: FIXED (SỬA LỖI NULL PLAYER IMAGE)
+// ====================================================
 
-// ================= 1. KHỞI TẠO =================
+// --- 1. KHỞI TẠO BIẾN TOÀN CỤC ---
+
 let currentPlaylist = [];
-let songIndex = 0;
-let currentKey = 'home';
+let viewKey = 'home';
+let playbackPlaylist = [];
+let playbackIndex = 0;
+
 let isPlaying = false;
 let isShuffle = false;
 let isRepeat = false;
 let isDraggingProgress = false;
 let isDraggingVolume = false;
 
-// DOM Elements
+// Lấy danh sách yêu thích
+let favorites = JSON.parse(localStorage.getItem('myFavorites')) || [];
+
+// --- 2. LẤY CÁC PHẦN TỬ DOM ---
+
 const audio = document.getElementById('audio');
+const ytPlayer = document.getElementById('youtube-floating-player');
+
 const playBtn = document.getElementById('btn-play');
-const playIcon = playBtn.querySelector('i');
+const playIcon = playBtn ? playBtn.querySelector('i') : null;
 const prevBtn = document.getElementById('btn-prev');
 const nextBtn = document.getElementById('btn-next');
 const shuffleBtn = document.getElementById('btn-shuffle');
 const repeatBtn = document.getElementById('btn-repeat');
+const playerHeartBtn = document.getElementById('btn-player-heart'); // Nút Tim ở Player
+
 const songNameEl = document.getElementById('player-song-name');
 const artistNameEl = document.getElementById('player-artist-name');
 const focusSongEl = document.getElementById('focus-song-info');
+// Lưu ý: class này có thể không tồn tại trong HTML của bạn, nên ta sẽ kiểm tra kỹ
 const playerImgEl = document.querySelector('.player-img');
+
 const progressContainer = document.querySelector('.progress-bar');
 const progressFill = document.querySelector('.progress-fill');
 const timeCurrent = document.querySelector('.time-text:first-child');
 const timeDuration = document.querySelector('.time-text:last-child');
+
 const volumeContainer = document.querySelector('.volume-bar');
 const volumeFill = document.querySelector('.volume-fill');
 const volumeIcon = document.querySelector('.fa-volume-high');
 
-// Lấy danh sách tim từ bộ nhớ
-let favorites = JSON.parse(localStorage.getItem('myFavorites')) || [];
 
-// ================= 2. CONTROLLER =================
-
-// Hàm CHÍNH để chuyển đổi giữa các trang
-// --- File js/main.js ---
+// ====================================================
+// 3. CHỨC NĂNG ĐIỀU HƯỚNG
+// ====================================================
 
 function switchPlaylist(key) {
-    currentKey = key;
+    viewKey = key;
 
-    // --- LOGIC 1: MỤC YÊU THÍCH ---
+    // Thu nhỏ video nếu đang phát
+    if (ytPlayer && !ytPlayer.classList.contains('hidden')) {
+        ytPlayer.classList.remove('full');
+        ytPlayer.classList.add('mini');
+    }
+
     if (key === 'favorites') {
         let likedNames = JSON.parse(localStorage.getItem('myFavorites')) || [];
         let uniqueFavoriteSongs = [];
@@ -58,266 +77,462 @@ function switchPlaylist(key) {
             }
         }
         currentPlaylist = uniqueFavoriteSongs;
-        playlistHeader.style.display = 'none';
+        if (playlistHeader) playlistHeader.style.display = 'none';
         renderFavoritesPage();
-        renderSidebar();
-        
-        // GỌI HÀM CUỘN TRANG (ĐÃ FIX)
-        scrollToTop(); 
-        
-        return;
+    } 
+    else {
+        const data = allPlaylists[key];
+        currentPlaylist = data.songs;
+
+        if (playlistHeader) {
+            if (data.type === 'home' || data.type === 'artist') {
+                playlistHeader.style.display = 'none';
+            } else {
+                playlistHeader.style.display = 'flex';
+                playlistTitle.innerText = data.title;
+            }
+        }
+
+        if (data.type === 'home') renderHomePage();
+        else if (data.type === 'artist') renderArtistPage(data);
+        else renderVerticalList();
     }
 
-    // --- LOGIC 2: CÁC MỤC KHÁC ---
-    const data = allPlaylists[key];
-    currentPlaylist = data.songs;
-
-    if (data.type === 'home' || data.type === 'artist') playlistHeader.style.display = 'none';
-    else { playlistHeader.style.display = 'flex'; playlistTitle.innerText = data.title; }
-
-    if (data.type === 'home') renderHomePage();
-    else if (data.type === 'artist') renderArtistPage(data);
-    else renderVerticalList();
     renderSidebar();
-
-    // GỌI HÀM CUỘN TRANG (ĐÃ FIX)
     scrollToTop();
 }
 
-// --- HÀM PHỤ TRỢ: CUỘN LÊN ĐẦU (Thêm hàm này vào cuối file main.js) ---
 function scrollToTop() {
-    // Dùng setTimeout để đợi 50ms cho giao diện vẽ xong hẳn rồi mới cuộn
     setTimeout(() => {
         const container = document.getElementById('playlist-container');
-        
-        // 1. Cuộn bản thân container (nếu nó có scroll)
         if (container) container.scrollTop = 0;
-        
-        // 2. QUAN TRỌNG: Cuộn thẻ CHA của nó (thường là nơi chứa thanh cuộn thật sự)
-        if (container && container.parentElement) {
-            container.parentElement.scrollTop = 0;
-        }
-
-        // 3. Cuộn toàn trang (dự phòng)
+        if (container && container.parentElement) container.parentElement.scrollTop = 0;
         window.scrollTo(0, 0);
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-        
-        // 4. Tìm thẻ main-view (nếu bạn đặt class này trong HTML)
-        const mainView = document.querySelector('.main-view'); // Hoặc class chứa thanh cuộn của bạn
-        if (mainView) mainView.scrollTop = 0;
-
-    }, 1); // Độ trễ 50ms là đủ để mắt thường không nhận ra nhưng máy tính xử lý kịp
+    }, 50);
 }
-function playSpecificSong(index) {
-    songIndex = index;
-    const currentSong = currentPlaylist[songIndex];
 
-    // 1. Nạp thông tin bài hát (Load tên, ảnh, video...)
+
+// ====================================================
+// 4. PHÁT NHẠC & XỬ LÝ (CORE LOGIC)
+// ====================================================
+
+function loadSong(song) {
+    // 1. Cập nhật thông tin text
+    if (songNameEl) songNameEl.innerText = song.name;
+    if (artistNameEl) artistNameEl.innerText = song.artist;
+    if (focusSongEl) focusSongEl.innerText = `Đang phát: ${song.name} - ${song.artist}`;
+
+    // 2. Cập nhật trạng thái nút Tim ở Player
+    if (playerHeartBtn) {
+        const isLiked = favorites.includes(song.name);
+        if(isLiked) {
+            playerHeartBtn.classList.remove('fa-regular');
+            playerHeartBtn.classList.add('fa-solid' , 'liked');
+        } else {
+            playerHeartBtn.classList.remove('fa-solid' , 'liked');
+            playerHeartBtn.classList.add('fa-regular');
+        }
+    }
+
+    // 3. Phân loại Youtube / MP3
+    if (song.youtubeId) {
+        audio.pause();
+        audio.src = ""; 
+        isPlaying = false;
+        if(playIcon) playIcon.className = 'fa-solid fa-play';
+
+        ytPlayer.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${song.youtubeId}?autoplay=1&controls=1&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        
+        ytPlayer.classList.remove('hidden');
+        ytPlayer.classList.remove('mini');
+        ytPlayer.classList.add('full'); 
+
+    } else {
+        ytPlayer.innerHTML = "";
+        ytPlayer.classList.add('hidden');
+        ytPlayer.classList.remove('full', 'mini');
+        audio.src = song.src;
+    }
+}
+
+function playSpecificSong(indexInViewList) {
+    playbackPlaylist = [...currentPlaylist];
+    playbackIndex = indexInViewList;
+    const currentSong = playbackPlaylist[playbackIndex];
+
     loadSong(currentSong);
 
-    // 2. LOGIC QUAN TRỌNG: Chỉ phát nhạc MP3 nếu KHÔNG PHẢI là YouTube
     if (!currentSong.youtubeId) {
         playSong();
-    } 
-    // (Nếu là YouTube thì loadSong đã tự lo việc hiện video rồi, không cần playSong nữa)
-
-    // 3. Cập nhật giao diện danh sách (Highlight)
-    if (allPlaylists[currentKey].type === 'artist') {
-        renderArtistPage(allPlaylists[currentKey]);
-    } else if (allPlaylists[currentKey].type !== 'home' && currentKey !== 'favorites') {
-        renderVerticalList();
     }
+    updateInterfaceHighlights();
 }
 
 function playRandomAndExpand() {
-    if (currentPlaylist.length === 0 && allPlaylists['home'].songs) {
-        currentPlaylist = allPlaylists['home'].songs;
+    if (playbackPlaylist.length === 0 && allPlaylists['home'].songs) {
+        playbackPlaylist = [...allPlaylists['home'].songs];
     }
-    songIndex = Math.floor(Math.random() * currentPlaylist.length);
-    loadSong(currentPlaylist[songIndex]);
-    playSong();
-    openNowPlaying();
+    if (currentPlaylist.length > 0) {
+        playbackPlaylist = [...currentPlaylist];
+    }
+
+    playbackIndex = Math.floor(Math.random() * playbackPlaylist.length);
+    const song = playbackPlaylist[playbackIndex];
+
+    loadSong(song);
+    
+    if (!song.youtubeId) {
+        playSong();
+        openNowPlaying();
+    }
 }
 
 function openNowPlaying() {
-    const currentSong = currentPlaylist[songIndex];
-    if (!currentSong) return;
+    const currentSong = playbackPlaylist[playbackIndex];
+    if (currentSong && currentSong.youtubeId) {
+        if (ytPlayer) {
+            ytPlayer.classList.remove('mini');
+            ytPlayer.classList.add('full');
+        }
+        return;
+    }
+
     let artistData = null;
-    if (allPlaylists[currentKey] && allPlaylists[currentKey].type === 'artist') {
-        artistData = allPlaylists[currentKey];
+    if (allPlaylists[viewKey] && allPlaylists[viewKey].type === 'artist') {
+        artistData = allPlaylists[viewKey];
     } else {
-        // Tìm artist data thủ công
         for (let key in allPlaylists) {
-            if (allPlaylists[key].title === currentSong.artist) { artistData = allPlaylists[key]; break; }
+            if (allPlaylists[key].title === currentSong.artist) {
+                artistData = allPlaylists[key];
+                break;
+            }
         }
     }
     renderSongDetailPage(currentSong, artistData);
 }
 
-function restorePreviousView() { switchPlaylist(currentKey); }
-
-function loadSong(song) {
-    songNameEl.innerText = song.name;
-    artistNameEl.innerText = song.artist;
-    if (focusSongEl) focusSongEl.innerText = `Đang phát: ${song.name} - ${song.artist}`;
-
-    if(song.youtubeId){
-        audio.pause();
-        audio.src = ""; 
-        playIcon.className = 'fa-solid fa-play'; // <--- CHUẨN: fa-solid (không phải fa-soild)
-        
+function updateInterfaceHighlights() {
+    // 1. Nếu đang ở màn hình chi tiết (Lyric/Disk) thì render lại để update thông tin
+    if (document.querySelector('.song-detail-page')) {
         openNowPlaying();
+        return;
     }
-    else{
-        audio.src = song.src;
-    } 
+
+    // 2. Xử lý riêng cho trang Favorites (SỬA LỖI TẠI ĐÂY)
+    if (viewKey === 'favorites') {
+        renderFavoritesPage();
+        return; // Dừng luôn, không chạy đoạn dưới nữa để tránh lỗi
+    }
+
+    // 3. Các trang còn lại (Home, Artist...)
+    // Kiểm tra xem dữ liệu có tồn tại không trước khi check .type
+    if (allPlaylists[viewKey]) {
+        if (allPlaylists[viewKey].type === 'artist') {
+            renderArtistPage(allPlaylists[viewKey]);
+        } else if (allPlaylists[viewKey].type !== 'home') {
+            renderVerticalList();
+        }
+    }
 }
 
-function playSong() { isPlaying = true; audio.play(); playIcon.className = 'fa-solid fa-pause'; }
-function pauseSong() { isPlaying = false; audio.pause(); playIcon.className = 'fa-solid fa-play'; }
+// ====================================================
+// 5. ĐIỀU KHIỂN PLAYER
+// ====================================================
+
+function playSong() {
+    isPlaying = true;
+    audio.play();
+    if(playIcon) playIcon.className = 'fa-solid fa-pause';
+}
+
+function pauseSong() {
+    isPlaying = false;
+    audio.pause();
+    if(playIcon) playIcon.className = 'fa-solid fa-play';
+}
+
 function togglePlay() {
-    if (!audio.src || audio.src === "") {
-        if (allPlaylists['home']) { currentKey = 'home'; currentPlaylist = allPlaylists['home'].songs; playSpecificSong(0); }
-    } else { isPlaying ? pauseSong() : playSong(); }
+    if ((!audio.src || audio.src === "") && ytPlayer.classList.contains('hidden')) {
+        if (allPlaylists['home']) {
+            switchPlaylist('home');
+            playSpecificSong(0);
+        }
+        return;
+    }
+
+    if (ytPlayer.classList.contains('hidden')) {
+        if (isPlaying) {
+            pauseSong();
+        } else {
+            playSong();
+        }
+    }
 }
 
 function nextSong() {
+    if (playbackPlaylist.length === 0) return;
+
     if (isShuffle) {
         let newIndex;
-        do { newIndex = Math.floor(Math.random() * currentPlaylist.length); } while (newIndex === songIndex && currentPlaylist.length > 1);
-        songIndex = newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * playbackPlaylist.length);
+        } while (newIndex === playbackIndex && playbackPlaylist.length > 1);
+        playbackIndex = newIndex;
     } else {
-        songIndex++;
-        if (songIndex > currentPlaylist.length - 1) songIndex = 0;
+        playbackIndex++;
+        if (playbackIndex > playbackPlaylist.length - 1) {
+            playbackIndex = 0;
+        }
     }
-    loadSong(currentPlaylist[songIndex]); playSong(); updateInterfaceAfterChange();
+    const song = playbackPlaylist[playbackIndex];
+    loadSong(song);
+    
+    if (!song.youtubeId) {
+        playSong();
+    }
+    updateInterfaceHighlights();
 }
 
 function prevSong() {
-    songIndex--;
-    if (songIndex < 0) songIndex = currentPlaylist.length - 1;
-    loadSong(currentPlaylist[songIndex]); playSong(); updateInterfaceAfterChange();
+    if (playbackPlaylist.length === 0) return;
+
+    playbackIndex--;
+    if (playbackIndex < 0) {
+        playbackIndex = playbackPlaylist.length - 1;
+    }
+
+    const song = playbackPlaylist[playbackIndex];
+    loadSong(song);
+    
+    if (!song.youtubeId) {
+        playSong();
+    }
+    updateInterfaceHighlights();
 }
 
-function updateInterfaceAfterChange() {
-    if (document.querySelector('.song-detail-page')) openNowPlaying();
-    else if (allPlaylists[currentKey].type === 'artist') renderArtistPage(allPlaylists[currentKey]);
-    else if (allPlaylists[currentKey].type !== 'home' && currentKey !== 'favorites') renderVerticalList();
+function onSongEnded() {
+    if (isRepeat) {
+        loadSong(playbackPlaylist[playbackIndex]);
+        if (!playbackPlaylist[playbackIndex].youtubeId) playSong();
+    } else {
+        nextSong();
+    }
 }
-function onSongEnded() { isRepeat ? playSpecificSong(songIndex) : nextSong(); }
 
-// ================= 3. HELPER & FEATURES =================
+// ====================================================
+// 6. CÁC TÍNH NĂNG PHỤ
+// ====================================================
+
+// --- Thả Tim & Đồng bộ ---
+function checkIsLiked(songName) {
+    return favorites.includes(songName);
+}
+
+function toggleHeart(songName, event) {
+    if (event) event.stopPropagation();
+    
+    const index = favorites.indexOf(songName);
+    const isLikedNow = index === -1;
+
+    if (isLikedNow) {
+        favorites.push(songName);
+    } else {
+        favorites.splice(index, 1);
+    }
+    localStorage.setItem('myFavorites', JSON.stringify(favorites));
+
+    // Cập nhật nút trong danh sách
+    if (event && event.target) {
+        const btn = event.target;
+        if (isLikedNow) {
+            btn.classList.add('liked', 'fa-solid');
+            btn.classList.remove('fa-regular');
+        } else {
+            btn.classList.remove('liked', 'fa-solid');
+            btn.classList.add('fa-regular');
+        }
+    }
+
+    // Đồng bộ với nút ở Player Bar
+    if (playerHeartBtn && playbackPlaylist.length > 0) {
+        const currentSong = playbackPlaylist[playbackIndex];
+        if (currentSong.name === songName) {
+            if (isLikedNow) {
+                playerHeartBtn.classList.remove('fa-regular');
+                playerHeartBtn.classList.add('fa-solid', 'liked');
+            } else {
+                playerHeartBtn.classList.remove('fa-solid', 'liked');
+                playerHeartBtn.classList.add('fa-regular');
+            }
+        }
+    }
+}
+
+// --- Tìm kiếm ---
+const searchInput = document.querySelector('input[placeholder*="Tìm kiếm"]');
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        const keyword = e.target.value.toLowerCase().trim();
+        
+        if (keyword === '') {
+            switchPlaylist('home');
+            return;
+        }
+
+        let uniqueResults = [];
+        let seenNames = new Set();
+
+        for (let key in allPlaylists) {
+            if (allPlaylists[key].songs) {
+                allPlaylists[key].songs.forEach(song => {
+                    const isMatch = song.name.toLowerCase().includes(keyword) || 
+                                  song.artist.toLowerCase().includes(keyword);
+                    if (isMatch && !seenNames.has(song.name)) {
+                        uniqueResults.push(song);
+                        seenNames.add(song.name);
+                    }
+                });
+            }
+        }
+        
+        currentPlaylist = uniqueResults;
+        renderHomePage();
+        const headerTitle = document.querySelector('.section-header span');
+        if (headerTitle) {
+            headerTitle.innerText = `Kết quả tìm kiếm: "${keyword}"`;
+        }
+    });
+}
+
+// --- Đồng hồ & Lời chào ---
+const clockEl = document.getElementById('clock');
+const dateEl = document.getElementById('date');
+
+function updateClock() {
+    const now = new Date();
+    if (clockEl) {
+        clockEl.innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    }
+    if (dateEl) {
+        dateEl.innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'numeric' });
+    }
+}
+
+function updateGreeting() {
+    const greetingEl = document.getElementById('user-greeting');
+    if (!greetingEl) return;
+    const hour = new Date().getHours();
+    let text = "", icon = "";
+    if (hour >= 5 && hour < 12) { text = "Chào buổi sáng"; icon = "☀️"; }
+    else if (hour >= 12 && hour < 18) { text = "Chiều rồi, thư giãn nhé"; icon = "🌤️"; }
+    else if (hour >= 18 && hour < 23) { text = "Buổi tối vui vẻ"; icon = "🌙"; }
+    else { text = "Khuya rồi, làm tí Lofi nhé"; icon = "🦉"; }
+    greetingEl.innerHTML = `${icon} ${text}, User`;
+}
+
+// --- Progress Bar & Volume Logic ---
 function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 }
+
 function calculateGlobalPercent(e, container) {
     const rect = container.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     let percent = clickX / rect.width;
-    if (percent < 0) percent = 0; if (percent > 1) percent = 1;
+    if (percent < 0) percent = 0;
+    if (percent > 1) percent = 1;
     return percent;
 }
+
 function handleProgressDrag(e) {
     const percent = calculateGlobalPercent(e, progressContainer);
     progressFill.style.width = `${percent * 100}%`;
-    if (audio.duration) { const seekTime = percent * audio.duration; timeCurrent.innerText = formatTime(seekTime); audio.currentTime = seekTime; }
+    if (audio.duration) {
+        const seekTime = percent * audio.duration;
+        timeCurrent.innerText = formatTime(seekTime);
+        audio.currentTime = seekTime;
+    }
 }
+
 function handleVolumeDrag(e) {
     const percent = calculateGlobalPercent(e, volumeContainer);
     audio.volume = percent;
     volumeFill.style.width = `${percent * 100}%`;
-    volumeIcon.className = percent === 0 ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+    if (percent === 0) volumeIcon.className = 'fa-solid fa-volume-xmark';
+    else volumeIcon.className = 'fa-solid fa-volume-high';
 }
 
-function checkIsLiked(songName) { return favorites.includes(songName); }
-
-function toggleHeart(songName, event) {
-    if (event) event.stopPropagation(); // Ngăn click thẻ
-    const btn = event.target;
-    const index = favorites.indexOf(songName);
-
-    if (index > -1) {
-        favorites.splice(index, 1);
-        btn.classList.remove('liked', 'fa-solid'); btn.classList.add('fa-regular');
-    } else {
-        favorites.push(songName);
-        btn.classList.add('liked', 'fa-solid'); btn.classList.remove('fa-regular');
-    }
-    localStorage.setItem('myFavorites', JSON.stringify(favorites));
+function restorePreviousView() {
+    switchPlaylist(viewKey);
 }
 
-// --- TÍNH NĂNG: TÌM KIẾM ---
-// --- Sửa trong file js/main.js (Phần Tính năng tìm kiếm) ---
+// ====================================================
+// 7. SỰ KIỆN & KHỞI CHẠY
+// ====================================================
 
-const searchInput = document.querySelector('input[placeholder*="Tìm kiếm"]');
-if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-        const keyword = e.target.value.toLowerCase().trim();
-        
-        // Nếu ô tìm kiếm trống -> Trả về trang chủ
-        if (keyword === '') { 
-            switchPlaylist('home'); 
-            return; 
-        }
+if(playBtn) playBtn.addEventListener('click', togglePlay);
+if(nextBtn) nextBtn.addEventListener('click', nextSong);
+if(prevBtn) prevBtn.addEventListener('click', prevSong);
+audio.addEventListener('ended', onSongEnded);
 
-        // --- LOGIC MỚI: TÌM KIẾM CÓ LỌC TRÙNG ---
-        let uniqueResults = [];
-        let seenNames = new Set(); // Bộ nhớ để ghi lại những bài đã lấy
-
-        // Quét qua tất cả playlist
-        for (let key in allPlaylists) {
-            if (allPlaylists[key].songs) {
-                allPlaylists[key].songs.forEach(song => {
-                    // 1. Kiểm tra từ khóa (Tên bài hát HOẶC Tên ca sĩ)
-                    const isMatch = song.name.toLowerCase().includes(keyword) || 
-                                  song.artist.toLowerCase().includes(keyword);
-                    
-                    // 2. Kiểm tra trùng lặp (Chưa có trong danh sách đã lấy)
-                    if (isMatch && !seenNames.has(song.name)) {
-                        uniqueResults.push(song); // Thêm vào kết quả
-                        seenNames.add(song.name); // Đánh dấu là đã lấy
-                    }
-                });
+// Nút Tim ở Player Bar (Click để Thích/Bỏ Thích)
+if (playerHeartBtn) {
+    playerHeartBtn.addEventListener('click', (e) => {
+        if (playbackPlaylist.length > 0) {
+            const currentSong = playbackPlaylist[playbackIndex];
+            toggleHeart(currentSong.name, e);
+            
+            // Nếu đang xem trang Favorites thì reload để thấy thay đổi
+            if (viewKey === 'favorites') {
+                switchPlaylist('favorites');
             }
         }
-        
-        // Cập nhật playlist hiện tại là kết quả đã lọc
-        currentPlaylist = uniqueResults; 
-        renderHomePage(); // Vẽ lại giao diện (Nó sẽ dùng currentPlaylist mới)
-        
-        // Sửa tiêu đề
-        const headerTitle = document.querySelector('.section-header span');
-        if (headerTitle) headerTitle.innerText = `Kết quả tìm kiếm: "${keyword}"`;
     });
 }
 
-// --- TÍNH NĂNG: BÀN PHÍM ---
-document.addEventListener('keydown', (e) => {
-    if (document.activeElement.tagName === 'INPUT') return;
-    switch (e.code) {
-        case 'Space': e.preventDefault(); togglePlay(); break;
-        case 'ArrowRight': nextSong(); break;
-        case 'ArrowLeft': prevSong(); break;
-        case 'ArrowUp': e.preventDefault(); if (audio.volume < 1) audio.volume = Math.min(1, audio.volume + 0.1); volumeFill.style.width = `${audio.volume * 100}%`; break;
-        case 'ArrowDown': e.preventDefault(); if (audio.volume > 0) audio.volume = Math.max(0, audio.volume - 0.1); volumeFill.style.width = `${audio.volume * 100}%`; break;
+// Hàm chung để xử lý khi bấm vào Player nhỏ (Ảnh hoặc Tên bài)
+const handlePlayerClick = () => {
+    if (ytPlayer && !ytPlayer.classList.contains('hidden')) {
+        ytPlayer.classList.remove('mini');
+        ytPlayer.classList.add('full');
+    } else {
+        openNowPlaying();
     }
-});
+};
 
-// ================= 4. GẮN SỰ KIỆN =================
-playBtn.addEventListener('click', togglePlay);
-nextBtn.addEventListener('click', nextSong);
-prevBtn.addEventListener('click', prevSong);
-audio.addEventListener('ended', onSongEnded);
-if (playerImgEl) { playerImgEl.style.cursor = 'pointer'; playerImgEl.onclick = openNowPlaying; }
-if (songNameEl) { songNameEl.style.cursor = 'pointer'; songNameEl.onclick = openNowPlaying; }
+// Gán sự kiện click cho ảnh nhỏ (nếu có)
+if (playerImgEl) {
+    playerImgEl.style.cursor = 'pointer';
+    playerImgEl.onclick = handlePlayerClick;
+}
 
-shuffleBtn.onclick = () => { isShuffle = !isShuffle; shuffleBtn.classList.toggle('icon-active', isShuffle); if (isShuffle) { isRepeat = false; repeatBtn.classList.remove('icon-active'); } };
-repeatBtn.onclick = () => { isRepeat = !isRepeat; repeatBtn.classList.toggle('icon-active', isRepeat); if (isRepeat) { isShuffle = false; shuffleBtn.classList.remove('icon-active'); } };
+// Gán sự kiện click cho tên bài hát (nếu có)
+if (songNameEl) {
+    songNameEl.style.cursor = 'pointer';
+    // SỬA LỖI Ở ĐÂY: Gán trực tiếp hàm handlePlayerClick thay vì copy từ playerImgEl
+    songNameEl.onclick = handlePlayerClick;
+}
 
+if(shuffleBtn) {
+    shuffleBtn.onclick = () => {
+        isShuffle = !isShuffle;
+        shuffleBtn.classList.toggle('icon-active', isShuffle);
+        if (isShuffle) { isRepeat = false; repeatBtn.classList.remove('icon-active'); }
+    };
+}
+
+if(repeatBtn) {
+    repeatBtn.onclick = () => {
+        isRepeat = !isRepeat;
+        repeatBtn.classList.toggle('icon-active', isRepeat);
+        if (isRepeat) { isShuffle = false; shuffleBtn.classList.remove('icon-active'); }
+    };
+}
+
+// Audio Update
 audio.addEventListener('timeupdate', (e) => {
     if (isDraggingProgress) return;
     const { duration, currentTime } = e.srcElement;
@@ -328,47 +543,74 @@ audio.addEventListener('timeupdate', (e) => {
         timeDuration.innerText = formatTime(duration);
     }
 });
-progressContainer.addEventListener('mousedown', (e) => { isDraggingProgress = true; handleProgressDrag(e); });
-volumeContainer.addEventListener('mousedown', (e) => { isDraggingVolume = true; handleVolumeDrag(e); });
-document.addEventListener('mousemove', (e) => { if (isDraggingProgress) handleProgressDrag(e); if (isDraggingVolume) handleVolumeDrag(e); });
+
+// Dragging
+if(progressContainer) progressContainer.addEventListener('mousedown', (e) => { isDraggingProgress = true; handleProgressDrag(e); });
+if(volumeContainer) volumeContainer.addEventListener('mousedown', (e) => { isDraggingVolume = true; handleVolumeDrag(e); });
+
+document.addEventListener('mousemove', (e) => {
+    if (isDraggingProgress) handleProgressDrag(e);
+    if (isDraggingVolume) handleVolumeDrag(e);
+});
 document.addEventListener('mouseup', () => { isDraggingProgress = false; isDraggingVolume = false; });
 
-// ================= 5. START =================
-const IDLE_TIME = 10000; let idleTimer;
+// Keyboard Shortcuts
+document.addEventListener('keydown', (e) => {
+    if (document.activeElement.tagName === 'INPUT') return;
+    switch (e.code) {
+        case 'Space': e.preventDefault(); togglePlay(); break;
+        case 'ArrowRight': nextSong(); break;
+        case 'ArrowLeft': prevSong(); break;
+        case 'ArrowUp': 
+            e.preventDefault(); 
+            if (audio.volume < 1) audio.volume = Math.min(1, audio.volume + 0.1); 
+            volumeFill.style.width = `${audio.volume * 100}%`; break;
+        case 'ArrowDown': 
+            e.preventDefault(); 
+            if (audio.volume > 0) audio.volume = Math.max(0, audio.volume - 0.1); 
+            volumeFill.style.width = `${audio.volume * 100}%`; break;
+    }
+});
+
+// Chế độ Focus (10 giây không dùng chuột)
+const IDLE_TIME = 5000;
+let idleTimer;
 const uiLayer = document.getElementById('mainInterface');
-const clockEl = document.getElementById('clock');
-const dateEl = document.getElementById('date');
-function updateClock() { const now = new Date(); if (clockEl) clockEl.innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`; if (dateEl) dateEl.innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'numeric' }); }
-setInterval(updateClock, 1000);
-function goFocus() { if (uiLayer) uiLayer.classList.add('hide-ui'); }
-function wakeUp() { if (uiLayer) uiLayer.classList.remove('hide-ui'); clearTimeout(idleTimer); idleTimer = setTimeout(goFocus, IDLE_TIME); }
 
-function updateGreeting() {
-    const greetingEl = document.getElementById('user-greeting');
-    if(!greetingEl) return;
-
-    const hour = new Date().getHours(); // Lấy giờ hiện tại (0 - 23)
-    let text = "";
-    let icon = "";
-
-    if(hour >= 5 && hour < 12) {
-        text = "Chào buổi sáng";
-        icon = "☀️";
+function goFocus() {
+    if (uiLayer) uiLayer.classList.add('hide-ui');
+    
+    // Ẩn video bằng class để giữ nhạc
+    if (ytPlayer) {
+        ytPlayer.style.transition = '';
+        ytPlayer.style.opacity = '';
+        ytPlayer.classList.add('focus-hide');
     }
-    else if (hour >= 12 && hour < 18) {
-        text = "Chiều rồi, thư giãn nhé";
-        icon = "🌤️";
-    }
-    else if (hour >= 18 && hour < 23) {
-        text = "Buổi tối vui vẻ";
-        icon = "🌙"; 
-    }
-    else {
-        text = "Khuya rồi, làm tí Lofi nhé";
-        icon = "🦉"; 
-    }
-    greetingEl.innerHTML = `${icon} ${text}, User`;
 }
 
-window.onload = () => { switchPlaylist('home'); updateClock(); wakeUp(); audio.volume = 0.5; volumeFill.style.width = '50%'; updateGreeting();};
-document.onmousemove = wakeUp; document.onkeypress = wakeUp; document.onclick = wakeUp;
+function wakeUp() {
+    if (uiLayer) uiLayer.classList.remove('hide-ui');
+    
+    // Hiện lại video
+    if (ytPlayer) {
+        ytPlayer.classList.remove('focus-hide');
+    }
+
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(goFocus, IDLE_TIME);
+}
+
+document.onmousemove = wakeUp;
+document.onkeypress = wakeUp;
+document.onclick = wakeUp;
+
+// START APP
+window.onload = () => {
+    switchPlaylist('home');
+    setInterval(updateClock, 1000);
+    updateClock();
+    wakeUp();
+    audio.volume = 0.5;
+    if(volumeFill) volumeFill.style.width = '50%';
+    updateGreeting();
+};

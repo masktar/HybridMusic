@@ -6,15 +6,14 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-body,
-html {
+body, html {
     height: 100%;
     width: 100%;
     overflow: hidden;
     background-color: #000;
 }
 
-/* --- BACKGROUND --- */
+/* --- BACKGROUND & FOCUS MODE --- */
 .background-layer {
     position: fixed;
     top: 0;
@@ -71,7 +70,7 @@ html {
     max-width: 800px;
 }
 
-/* --- UI GIAO DIỆN --- */
+/* --- UI LAYER (GIAO DIỆN CHÍNH) --- */
 .ui-layer {
     position: fixed;
     top: 0;
@@ -106,6 +105,41 @@ html {
     border-bottom: 1px solid #333;
     color: white;
 }
+/* 1. Khung chứa Logo và Tên */
+.brand-logo-container {
+    display: flex;             /* Xếp ngang hàng */
+    align-items: center;       /* Căn giữa theo chiều dọc */
+    gap: 15px;                 /* Khoảng cách giữa Logo và Chữ */
+    padding: 15px 20px;        /* Căn lề cho thoáng */
+    cursor: pointer;           /* Chỉ tay vào thấy bấm được */
+}
+
+/* 2. Chỉnh kích thước Logo */
+.my-logo {
+    width: 40px;               /* Độ rộng logo (tùy chỉnh to nhỏ ở đây) */
+    height: 40px;
+    object-fit: contain;       /* Đảm bảo ảnh không bị méo */
+    filter: drop-shadow(0 0 5px rgba(255, 85, 0, 0.5)); /* (Tùy chọn) Phát sáng màu cam nhẹ */
+}
+
+/* 3. Chỉnh phông chữ "Hybrid Music" */
+.brand-name {
+    font-size: 22px;           /* Cỡ chữ */
+    font-weight: 800;          /* Chữ đậm */
+    color: white;              /* Màu chữ trắng */
+    letter-spacing: 1px;       /* Giãn chữ ra xíu cho sang */
+    text-transform: uppercase; /* Viết hoa toàn bộ */
+}
+
+/* (Tùy chọn) Hiệu ứng khi di chuột vào Logo */
+.brand-logo-container:hover .my-logo {
+    transform: rotate(-10deg); /* Xoay nhẹ logo cho vui mắt */
+    transition: transform 0.3s;
+}
+.brand-logo-container:hover .brand-name {
+    color: #ff5500;            /* Đổi chữ sang màu cam khi hover */
+    transition: color 0.3s;
+}
 
 .search-bar {
     padding: 8px 15px;
@@ -136,7 +170,7 @@ html {
     border-radius: 4px;
     font-weight: 600;
     transition: 0.2s;
-    position: relative;
+    /* position: relative; */
 }
 
 .playlist-item:hover {
@@ -158,47 +192,7 @@ html {
     background: linear-gradient(to bottom, #1e1e1e, #121212);
 }
 
-.banner-box {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* Style cho List dọc (Playlist thường) */
-.song-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #b3b3b3;
-    cursor: pointer;
-    transition: 0.2s;
-    border: 1px solid transparent;
-}
-
-.song-box:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.song-box.active {
-    background-color: rgba(255, 107, 0, 0.15);
-    color: #ff6b00;
-    border-color: #ff6b00;
-}
-
-.btn-play-small {
-    background: transparent;
-    color: inherit;
-    border: none;
-    font-size: 16px;
-}
-
-/* --- HOME PAGE STYLE (Spotify Style) --- */
+/* Banner Trang Home */
 .hero-banner {
     width: 100%;
     height: 280px;
@@ -243,6 +237,7 @@ html {
     transform: scale(1.05);
 }
 
+/* Các thành phần thẻ nhạc (Card) */
 .section-header {
     font-size: 22px;
     color: white;
@@ -253,11 +248,33 @@ html {
     align-items: end;
 }
 
-.see-all {
-    font-size: 14px;
-    color: #b3b3b3;
-    cursor: pointer;
-    font-weight: normal;
+/* 1. Khung bao quanh để giữ vị trí nút bấm */
+.scroll-wrapper {
+    position: relative; /* Để nút absolute canh theo cái này */
+    width: 100%;
+}
+
+/* 2. Container chứa bài hát (Ẩn thanh cuộn nhưng vẫn cuộn được) */
+.horizontal-scroll-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;        /* Cho phép cuộn */
+    scroll-behavior: smooth; /* Trượt mượt mà */
+    padding-bottom: 20px; 
+    
+    /* Ẩn thanh cuộn trên các trình duyệt */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.horizontal-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Định dạng thẻ bên trong khi ở chế độ cuộn ngang */
+.horizontal-scroll-container .music-card {
+    min-width: 200px;        /* QUAN TRỌNG: Chiều rộng cố định, không bị co lại */
+    width: 200px;
+    flex-shrink: 0;          /* Đảm bảo thẻ không bị bóp méo khi màn hình nhỏ */
 }
 
 .card-grid {
@@ -291,12 +308,7 @@ html {
     align-items: center;
     justify-content: center;
     position: relative;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.card-icon {
-    font-size: 40px;
-    color: #555;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
 }
 
 .card-title {
@@ -314,7 +326,182 @@ html {
     font-size: 14px;
 }
 
-/* --- PLAYER BAR --- */
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-100%); /* Căn giữa theo chiều dọc */
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7); /* Màu đen mờ */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Hình tròn */
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* transition: all 0.2s; */
+}
+
+.scroll-btn:hover {
+    background-color: #333; /* Sáng hơn khi di chuột */
+    transform: translateY(-100%) scale(1.1);
+}
+
+/* Vị trí nút Trái/Phải */
+.scroll-btn.left { left: -15px; }
+.scroll-btn.right { right: -15px; }
+
+/* Nút tim nhỏ trên card */
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    margin-top: 10px;
+    width: 100%;
+}
+
+.title-container .card-title {
+    margin :0;
+    line-height: 1.2;
+    padding-top: 2px;
+}
+
+.heart-btn {
+    background: transparent;
+    border: none;
+    color: #b3b3b3;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: transform 0.2s;
+}
+.heart-btn:hover {
+    transform: scale(1.2);
+    color: white;
+}
+
+.heart-btn.liked {
+    color: #ff5500; /* Màu cam chủ đạo */
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(255, 85, 0, 0.5); /* Thêm chút hiệu ứng phát sáng */
+}
+
+/* --- TRANG NGHỆ SĨ & LIST BÀI HÁT --- */
+.artist-header {
+    width: 100%;
+    height: 60vh;
+    /* aspect-ratio: 16/9; height: auto; */
+    position: relative;
+    background-size: cover;
+    background-position: center 20%; 
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+    padding: 30px;
+    overflow: hidden;
+}
+
+.artist-avatar {
+    width: 180px;       
+    height: 180px;      
+    border-radius: 50%; 
+    object-fit: cover;  
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5); 
+    border: 4px solid #121212; 
+    flex-shrink: 0; 
+}
+
+.artist-details{
+    color: white;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5), 0 0 6px rgba(255, 255, 255, 0.25);
+    /* text-shadow: 0 0 3px rgba(0,0,0,0.8); */
+}
+
+.artist-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.artist-play-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: #ff6b00; 
+    border: 2.5px solid #000000; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    /* transition: 0.2s; */
+}
+
+.artist-play-btn i {
+    font-size: 22px;
+    color: black; /* Icon bên trong cũng màu đen cho đồng bộ */
+    margin-left: 4px;
+}
+
+/* Hiệu ứng khi di chuột */
+.artist-play-btn:hover {
+    transform: scale(1.1);
+    background-color: #ff8533;
+    border-color: #1a1a1a; 
+}
+
+.artist-play-btn:active {
+    transform: scale(0.95);
+}
+
+.follow-btn {
+    background: #ff6b00;
+    border: 2px solid white;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: 0.2s;
+}
+.follow-btn:hover { border-color: white; transform: scale(1.05); }
+
+
+/* Style cho List dọc (Playlist thường) */
+.song-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #b3b3b3;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+
+.song-box:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.song-box.active {
+    background-color: rgba(255, 107, 0, 0.15);
+    color: #ff6b00;
+    border-color: #ff6b00;
+}
+
+/* --- PLAYER BAR (THANH PHÁT NHẠC DƯỚI CÙNG) --- */
 .footer-player {
     grid-area: footer;
     background-color: #181818;
@@ -334,6 +521,23 @@ html {
     padding-left: 10px;
 }
 
+.player-right {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    padding-right: 10px;
+}
+
+.player-center {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
 .song-name-text {
     color: white;
     font-size: 14px;
@@ -343,14 +547,6 @@ html {
 .artist-name-text {
     font-size: 11px;
     margin-top: 3px;
-}
-
-.player-center {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
 }
 
 .player-controls {
@@ -402,36 +598,20 @@ html {
     font-size: 11px;
 }
 
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100px;
+}
+
 .progress-bar {
     flex-grow: 1;
     height: 4px;
     background-color: #4d4d4d;
     border-radius: 2px;
     cursor: pointer;
-    position: relative;
-}
-
-.progress-fill {
-    width: 0%;
-    height: 100%;
-    background-color: #ff6b00;
-    border-radius: 2px;
-}
-
-.player-right {
-    width: 30%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 15px;
-    padding-right: 10px;
-}
-
-.volume-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100px;
+    /* position: relative; */
 }
 
 .volume-bar {
@@ -442,14 +622,88 @@ html {
     cursor: pointer;
 }
 
-.volume-fill {
-    width: 50%;
+.progress-fill {
+    width: 0%;
     height: 100%;
     background-color: #ff6b00;
     border-radius: 2px;
 }
 
-/* --- CUSTOM SCROLLBAR (THANH CUỘN) --- */
+.volume-fill {
+    width: 0%;
+    height: 100%;
+    background-color: #ff6b00;
+    border-radius: 2px;
+}
+
+#btn-player-heart {
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#btn-player-heart:hover {
+    color: #f7864e;
+    transform: scale(1.1);
+}
+
+#btn-player-heart.liked {
+    color: #ff6b00;
+    text-shadow: 0 0 5px #ff6b00, 0 0 15px #ff6b00;
+    transform: scale(1.2);
+}
+#btn-player-heart:active {
+    transform: scale(0.9);
+}
+
+.yt-player {
+    position: fixed;
+    z-index: 100; /* Nổi lên trên cùng */
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Hiệu ứng trượt mượt mà */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: black;
+    overflow: hidden;
+}
+
+/* 1. Trạng thái ẨN (Khi nghe nhạc MP3) */
+.yt-player.hidden {
+    bottom: -300px; /* Giấu xuống đáy */
+    right: 20px;
+    width: 320px;
+    height: 180px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 2. Trạng thái MINI (Khi đang lướt web khác) */
+.yt-player.mini {
+    bottom: 100px; /* Nằm góc phải, trên thanh player */
+    right: 20px;
+    width: 320px;
+    height: 180px;
+    border-radius: 12px;
+    border: 2px solid #333;
+}
+
+/* 3. Trạng thái FULL (Khi bấm vào xem) */
+.yt-player.full {
+    top: 60px; /* Cách header */
+    left: 240px; /* Cách sidebar */
+    width: calc(100% - 240px); /* Tràn màn hình nội dung */
+    height: calc(100% - 150px);
+    border-radius: 0;
+    border: none;
+}
+
+#youtube-floating-player {
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+#youtube-floating-player.focus-hide {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
 
 /* 1. Dành cho Chrome, Edge, Safari */
 ::-webkit-scrollbar {
@@ -472,30 +726,6 @@ html {
     background: #ff7700; 
 }
 
-/* --- BỔ SUNG CHO TRANG NGHỆ SĨ FULL --- */
-
-/* Nút hành động (Play + Follow) */
-.artist-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.follow-btn {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
-    color: white;
-    padding: 8px 20px;
-    border-radius: 4px;
-    font-weight: 700;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 1px;
-    transition: 0.2s;
-}
-.follow-btn:hover { border-color: white; transform: scale(1.05); }
 
 /* Fan cũng thích (Ảnh tròn) */
 .circle-img {
@@ -514,125 +744,6 @@ html {
 
 }
 
-/* --- TÌM ĐOẠN NÀY TRONG style.css --- */
-
-/* --- TÌM ĐOẠN NÀY TRONG style.css --- */
-
-.artist-header {
-    width: 100%;
-    
-    /* --- SỬA DÒNG NÀY --- */
-    /* Thay vì cố định 350px, hãy để nó tự giãn theo tỷ lệ ảnh */
-    height: 60vh; /* Chiếm 60% chiều cao màn hình (khoảng 600-700px) */
-    
-    /* Hoặc dùng tỷ lệ cố định nếu muốn chính xác như ảnh gốc */
-    /* aspect-ratio: 16/9; height: auto; */
-
-    position: relative;
-    background-size: cover;
-    
-    /* Căn chỉnh để thấy mặt Sơn Tùng rõ nhất */
-    background-position: center 20%; 
-    
-    border-radius: 12px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: flex-end;
-    padding: 30px;
-    overflow: hidden;
-}
-
-/* --- SỬA LẠI AVATAR NGHỆ SĨ --- */
-.artist-avatar {
-    width: 180px;       /* Kích thước cố định (bạn có thể chỉnh 150px hoặc 200px tùy thích) */
-    height: 180px;      /* Phải bằng width để ra hình tròn */
-    
-    border-radius: 50%; /* Bo tròn tuyệt đối */
-    object-fit: cover;  /* Cắt ảnh vừa khít khung tròn mà không bị méo */
-    
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5); /* Đổ bóng cho nổi bật */
-    border: 4px solid #121212; /* Viền trùng màu nền để tách biệt với banner */
-    
-    flex-shrink: 0; /* Đảm bảo ảnh không bị bóp méo khi màn hình nhỏ */
-}
-
-.artist-details{
-    color: white;
-    text-shadow: 0 0 1px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5), 0 0 6px rgba(255, 255, 255, 0.25);
-}
-
-/* --- NÚT PLAY TRANG NGHỆ SĨ (Viền Đen + Bóng Đen) --- */
-.artist-play-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    background-color: #ff6b00; /* Nền cam */
-    
-    /* --- SỬA DÒNG NÀY: VIỀN ĐEN --- */
-    border: 2.5px solid #000000; /* Viền đen đậm (3px cho rõ) */
-    
-    /* Đổ bóng đen */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.artist-play-btn i {
-    font-size: 22px;
-    color: black; /* Icon bên trong cũng màu đen cho đồng bộ */
-    margin-left: 4px;
-}
-
-/* Hiệu ứng khi di chuột */
-.artist-play-btn:hover {
-    transform: scale(1.1);
-    background-color: #ff8533;
-    border-color: #1a1a1a; /* Viền đen nhạt hơn xíu khi hover (tùy chọn) */
-}
-
-.artist-play-btn:active {
-    transform: scale(0.95);
-}
-
-.heart-btn {
-    background: transparent;
-    border: none;
-    color: #b3b3b3;
-    font-size: 18px;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: transform 0.2s;
-}
-.heart-btn:hover {
-    transform: scale(1.2);
-    color: white;
-}
-
-.heart-btn.liked {
-    color: #ff5500; /* Màu cam chủ đạo */
-    font-weight: 900;
-    text-shadow: 0 0 10px rgba(255, 85, 0, 0.5); /* Thêm chút hiệu ứng phát sáng */
-}
-
-/* 2. CLASS HỖ TRỢ CĂN GIỮA (Thêm mới) */
-.title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* <-- CÂU LỆNH QUAN TRỌNG ĐỂ TIM KHÔNG BỊ LỆCH */
-    margin-top: 10px;
-    width: 100%;
-}
-
-.title-container .card-title {
-    margin :0;
-    line-height: 1.2;
-    padding-top: 2px;
-}
-
 .title-container .heart-btn { 
     display: flex;
     align-items: center;
@@ -649,95 +760,10 @@ html {
     scroll-behavior: smooth; /* Cuộn mượt mà */
 }
 
-/* Định dạng thẻ bên trong khi ở chế độ cuộn ngang */
-.horizontal-scroll-container .music-card {
-    min-width: 200px;        /* QUAN TRỌNG: Chiều rộng cố định, không bị co lại */
-    width: 200px;
-    flex-shrink: 0;          /* Đảm bảo thẻ không bị bóp méo khi màn hình nhỏ */
-}
-
-/* 1. Khung bao quanh để giữ vị trí nút bấm */
-.scroll-wrapper {
-    position: relative; /* Để nút absolute canh theo cái này */
-    width: 100%;
-}
-
-/* 2. Container chứa bài hát (Ẩn thanh cuộn nhưng vẫn cuộn được) */
-.horizontal-scroll-container {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;        /* Cho phép cuộn */
-    scroll-behavior: smooth; /* Trượt mượt mà */
-    
-    /* Ẩn thanh cuộn trên các trình duyệt */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-.horizontal-scroll-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-/* 3. Style cho nút Mũi tên (Giống Spotify) */
-.scroll-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-100%); /* Căn giữa theo chiều dọc */
-    width: 40px;
-    height: 40px;
-    background-color: rgba(0, 0, 0, 0.7); /* Màu đen mờ */
-    color: white;
-    border: none;
-    border-radius: 50%; /* Hình tròn */
-    cursor: pointer;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-.scroll-btn:hover {
-    background-color: #333; /* Sáng hơn khi di chuột */
-    transform: translateY(-100%) scale(1.1);
-}
-
-/* Vị trí nút Trái/Phải */
-.scroll-btn.left { left: -15px; }
-.scroll-btn.right { right: -15px; }
 
 
-/* 1. Khung chứa Logo và Tên */
-.brand-logo-container {
-    display: flex;             /* Xếp ngang hàng */
-    align-items: center;       /* Căn giữa theo chiều dọc */
-    gap: 15px;                 /* Khoảng cách giữa Logo và Chữ */
-    padding: 15px 20px;        /* Căn lề cho thoáng */
-    cursor: pointer;           /* Chỉ tay vào thấy bấm được */
-}
 
-/* 2. Chỉnh kích thước Logo */
-.my-logo {
-    width: 40px;               /* Độ rộng logo (tùy chỉnh to nhỏ ở đây) */
-    height: 40px;
-    object-fit: contain;       /* Đảm bảo ảnh không bị méo */
-    filter: drop-shadow(0 0 5px rgba(255, 85, 0, 0.5)); /* (Tùy chọn) Phát sáng màu cam nhẹ */
-}
 
-/* 3. Chỉnh phông chữ "Hybrid Music" */
-.brand-name {
-    font-size: 22px;           /* Cỡ chữ */
-    font-weight: 800;          /* Chữ đậm */
-    color: white;              /* Màu chữ trắng */
-    letter-spacing: 1px;       /* Giãn chữ ra xíu cho sang */
-    text-transform: uppercase; /* Viết hoa toàn bộ */
-}
 
-/* (Tùy chọn) Hiệu ứng khi di chuột vào Logo */
-.brand-logo-container:hover .my-logo {
-    transform: rotate(-10deg); /* Xoay nhẹ logo cho vui mắt */
-    transition: transform 0.3s;
-}
-.brand-logo-container:hover .brand-name {
-    color: #ff5500;            /* Đổi chữ sang màu cam khi hover */
-    transition: color 0.3s;
-}
+
+
