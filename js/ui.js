@@ -275,17 +275,24 @@ function renderListItems(c) {
     currentPlaylist.forEach((s, i) => {
         const d = document.createElement('div');
         d.className = 'song-box';
+        
         if (isSongPlaying(s.name)) d.classList.add('active');
         
         const lk = checkIsLiked(s.name);
         const hc = lk ? 'fa-solid fa-heart heart-btn liked' : 'fa-regular fa-heart heart-btn';
         
+        // --- ĐOẠN CODE SỬA ---
         d.innerHTML = `
-        <div style="display:flex; flex-direction:column;">
-            <span style="font-weight:500;">${s.name}</span>
+        <div style="display:flex; flex-direction:column; flex: 1; padding-right: 10px; min-width: 0;">
+            
+            <div class="text-limit-2-lines" style="font-weight:500; font-size: 14px;" title="${s.name}">
+                ${s.name}
+            </div>
+            
             <span style="font-size:12px; opacity:0.7;">${s.artist}</span>
         </div> 
-        <i class="${hc}" style="margin-right:15px;" onclick="toggleHeart('${escapeName(s.name)}', event)"></i>`;
+        <i class="${hc}" style="margin-right:15px; flex-shrink: 0;" onclick="toggleHeart('${escapeName(s.name)}', event)"></i>`;
+        
         
         d.onclick = () => playSpecificSong(i);
         c.appendChild(d);

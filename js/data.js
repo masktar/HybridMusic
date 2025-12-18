@@ -42,16 +42,14 @@ const allPlaylists = {
 
         // 2. ALBUMS (Mới thêm)
         albums: [
-            { title: "m-tp M-TP", year: "2017", img: "https://upload.wikimedia.org/wikipedia/vi/5/53/S%C6%A1n_T%C3%B9ng_M-TP_-_m-tp_M-TP.png" },
-            { title: "Sky Tour Movie", year: "2020", img: "https://upload.wikimedia.org/wikipedia/vi/2/23/Sky_Tour_Movie_poster.jpg" }
+            { title: "m-tp M-TP", year: "2017", img: "pic/st/playlist1.jpg" },
+            { title: "Sky Tour Movie", year: "2020", img: "pic/st/playlist2.jpg" }
         ],
 
         // 3. SINGLES (Đĩa đơn - Mới thêm)
         singles: [
-            { title: "Chúng Ta Của Tương Lai", year: "2024", img: "https://i.scdn.co/image/ab67616d0000b27329f8605df0ebcc523df16d06" },
-            { title: "Making My Way", year: "2023", img: "https://i.scdn.co/image/ab67616d0000b27320b333737b822cb6295d9834" },
-            { title: "There's No One At All", year: "2022", img: "https://upload.wikimedia.org/wikipedia/vi/6/61/There%27s_no_one_at_all_single_cover.jpg" },
-            { title: "Muộn Rồi Mà Sao Còn", year: "2021", img: "https://upload.wikimedia.org/wikipedia/vi/thumb/9/9f/Mu%E1%BB%99n_r%E1%BB%93i_m%C3%A0_sao_c%C3%B2n.png/220px-Mu%E1%BB%99n_r%E1%BB%93i_m%C3%A0_sao_c%C3%B2n.png" }
+            { title: "Chúng Ta Của Tương Lai", year: "2024", img: "pic/st/st2.jpg" },
+            { title: "Muộn Rồi Mà Sao Còn", year: "2021", img: "pic/st/st1.jpg" }
         ],
 
         // 4. FAN CŨNG THÍCH (Mới thêm)
@@ -87,14 +85,14 @@ const allPlaylists = {
 
         // 2. ALBUMS
         albums: [
-            { title: "Một Vạn Năm", year: "2022", img: "https://i.scdn.co/image/ab67616d0000b2736b047c1401da9df5977936cc" },
-            { title: "Vũ Trụ Song Song", year: "2019", img: "https://i.scdn.co/image/ab67616d0000b273a2b0057053359c55b62b700f" }
+            { title: "Tuyển tập của Vũ", year: "2022", img: "pic/vu/playlist1.jpg" },
+            { title: "Vũ Hits", year: "2019", img: "pic/vu/vu1.jpg" }
         ],
 
         // 3. SINGLES
         singles: [
-            { title: "Những Lời Hứa Bỏ Quên", year: "2023", img: "https://i.scdn.co/image/ab67616d0000b27393fe387cb7729f27d530f406" },
-            { title: "Bước Qua Mùa Cô Đơn", year: "2020", img: "https://i.scdn.co/image/ab67616d0000b273d6e5ac47ae07df3747cb99d4" }
+            { title: "Những Lời Hứa Bỏ Quên", year: "2023", img: "pic/vu/vu2.jpg" },
+            { title: "Bước Qua Mùa Cô Đơn", year: "2020", img: "pic/vu/vu4.jpg" }
         ],
 
         // 4. FAN CŨNG THÍCH (Gợi ý nghệ sĩ Indie khác)
@@ -126,14 +124,14 @@ const allPlaylists = {
 
         // 2. ALBUaw
         albums: [
-            { title: "Một Vạn Năm", year: "2022", img: "https://i.scdn.co/image/ab67616d0000b2736b047c1401da9df5977936cc" },
-            { title: "Vũ Trụ Song Song", year: "2019", img: "https://i.scdn.co/image/ab67616d0000b273a2b0057053359c55b62b700f" }
+            { title: "Tuyển tập Datkaa", year: "2022", img: "pic/dk/playlist1.jpg" },
+            { title: "Hits", year: "2019", img: "pic/dk/playlist2.jpg" }
         ],
 
         // 3. SINGLES
         singles: [
-            { title: "Những Lời Hứa Bỏ Quên", year: "2023", img: "https://i.scdn.co/image/ab67616d0000b27393fe387cb7729f27d530f406" },
-            { title: "Bước Qua Mùa Cô Đơn", year: "2020", img: "https://i.scdn.co/image/ab67616d0000b273d6e5ac47ae07df3747cb99d4" }
+            { title: "Tình thu sao hạ buồn", year: "2023", img: "pic/dk/dk6.jpg" },
+            { title: "Chiều thu họa bóng nàng", year: "2020", img: "pic/dk/dk2.jpg" }
         ],
 
         // 4. FAN CŨNG THÍCH (Gợi ý nghệ sĩ Indie khác)
@@ -167,14 +165,14 @@ const allPlaylists = {
 
         // 2. ALBUMS
         albums: [
-            { title: "Một Vạn Năm", year: "2022", img: "https://i.scdn.co/image/ab67616d0000b2736b047c1401da9df5977936cc" },
-            { title: "Vũ Trụ Song Song", year: "2019", img: "https://i.scdn.co/image/ab67616d0000b273a2b0057053359c55b62b700f" }
+            { title: "Walkers", year: "2022", img: "pic/aw/playlist1.jpg" },
+            { title: "Alan Walkers", year: "2019", img: "pic/aw/playlist2.jpg" }
         ],
 
         // 3. SINGLES
         singles: [
-            { title: "Những Lời Hứa Bỏ Quên", year: "2023", img: "https://i.scdn.co/image/ab67616d0000b27393fe387cb7729f27d530f406" },
-            { title: "Bước Qua Mùa Cô Đơn", year: "2020", img: "https://i.scdn.co/image/ab67616d0000b273d6e5ac47ae07df3747cb99d4" }
+            { title: "Faded", year: "2023", img: "pic/aw/aw1.jpg" },
+            { title: "On My Way", year: "2020", img: "pic/aw/aw3.jpg" }
         ],
 
         // 4. FAN CŨNG THÍCH (Gợi ý nghệ sĩ Indie khác)
@@ -203,7 +201,15 @@ const allPlaylists = {
                 // Mã video Live thứ 2 (nhạc điện tử)
                 youtubeId: "4xDzrJKXOOY", 
                 img: "https://i.ytimg.com/vi/4xDzrJKXOOY/maxresdefault.jpg" 
+            },
+            { 
+                name: "Feel Good Vibes 2025 ☀️ 24/7 Live Stream 🎧 Deep & Chill House Music by We Are Diamond", 
+                artist: "We Are Diamond", 
+                // Mã video Live thứ 2 (nhạc điện tử)
+                youtubeId: "v-KQZ1KZcEo", 
+                img: "https://i.ytimg.com/vi/v-KQZ1KZcEo/maxresdefault.jpg" 
             }
+            
         ]
     },
     // ... Copy hết các playlist còn lại vào đây

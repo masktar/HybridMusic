@@ -573,7 +573,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Chế độ Focus (10 giây không dùng chuột)
-const IDLE_TIME = 5000;
+const IDLE_TIME = 120000;
 let idleTimer;
 const uiLayer = document.getElementById('mainInterface');
 
