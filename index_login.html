@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="left-section">
+            <div class="logo-box">
+                <img src="pic/Logo.png" alt="Logo">
+            </div>
+        </div>
+        
+        <div class="right-section">
+            <div class="form-content">
+                <h2>Sign In</h2>
+                <div class="subtitle">
+                    If you don't have an account register<br>
+                    You can <a href="index_signup.html" class="link-register">Register here!</a>
+                </div>
+                
+                <form action="index.html">
+                    <div class="input-group">
+                        <label>Email</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                            <input class="input-field" type="text" placeholder="Enter your email address">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input class="input-field" type="password" placeholder="Enter your Password">
+                            <i class="fa-regular fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="actions">
+                        <div class="remember-me">
+                            <input type="checkbox" id="check"> 
+                            <label for="check">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-pw">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">Login</button>
+                    
+                    <div class="divider">
+                        <span>or continue with</span>
+                    </div>
+
+                    <div class="social-login">
+                        <a href="#" class="social-btn">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-btn">
+                            <i class="fa-brands fa-apple"></i>
+                        </a>
+                        <a href="#" class="social-btn">
+                            <i class="fa-brands fa-google"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

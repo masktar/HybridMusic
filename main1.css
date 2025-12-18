@@ -1,0 +1,177 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Be Vietnam Pro", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #0f0518;
+}
+
+/* --- KHUNG CHỨA CHUNG --- */
+.login-container {
+    width: 90%;           
+    max-width: 1050px;    
+    min-height: 650px;    
+    display: flex;
+    background: linear-gradient(135deg, #2A1580 0%, #120701 100%);
+    color: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* --- PHẦN TRÁI --- */
+.left-section {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-box {
+    width: 100%;
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+.logo-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* --- PHẦN PHẢI --- */
+.right-section {
+    flex: 1;
+    padding: 40px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-content {
+    width: 100%;
+    /* Giới hạn độ rộng để form đẹp hơn khi ở màn hình to */
+    /* max-width: 400px;  -> Có thể mở comment này nếu muốn form hẹp hơn */
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.subtitle {
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.link-register {
+    color: #ff6b00;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- INPUTS --- */
+.input-group {
+    margin-bottom: 20px; /* Giảm khoảng cách chút vì form dài */
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #eee;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 0;
+    color: #ccc;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.input-field {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: white;
+    padding: 10px 35px 10px 35px; /* Chỗ cho icon */
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-field:focus {
+    border-bottom-color: #ff6b00;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 0;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    color: white;
+}
+
+/* --- BUTTON --- */
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    background-color: #ff4500;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+    margin-top: 20px;
+}
+
+.btn-login:hover {
+    background-color: #ff5722;
+    transform: translateY(-2px);
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+    }
+    .left-section {
+        padding: 30px 30px 0 30px;
+    }
+    .logo-box {
+        max-width: 150px;
+    }
+    .right-section {
+        padding: 30px;
+    }
+}

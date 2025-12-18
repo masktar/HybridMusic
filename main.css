@@ -1,0 +1,239 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Be Vietnam Pro", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #0f0518; /* Nền tối bên ngoài */
+}
+
+/* --- KHUNG CHỨA (CARD STYLE - CŨ) --- */
+.login-container {
+    width: 90%;           
+    max-width: 1000px;    
+    min-height: 600px;    
+    display: flex;
+    /* Màu Gradient */
+    background: linear-gradient(135deg, #2A1580 0%, #120701 100%);
+    color: white;
+    /* Bo góc và đổ bóng để tạo cảm giác nổi */
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* --- PHẦN TRÁI --- */
+.left-section {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-box {
+    width: 100%;
+    max-width: 200px; /* Logo to vừa phải */
+    display: flex;
+    justify-content: center;
+}
+
+.logo-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* --- PHẦN PHẢI --- */
+.right-section {
+    flex: 1;
+    padding: 40px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.subtitle {
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.link-register {
+    color: #ff6b00;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- INPUTS NÂNG CẤP (CÓ ICON) --- */
+.input-group {
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #eee;
+}
+
+/* Wrapper để chứa icon + input */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Icon nằm bên trái */
+.input-icon {
+    position: absolute;
+    left: 0;
+    color: #ccc;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.input-field {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: white;
+    /* Padding trái 35px để chữ ko đè lên icon */
+    padding: 10px 35px 10px 35px; 
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-field:focus {
+    border-bottom-color: #ff6b00;
+}
+
+/* Icon con mắt bên phải */
+.toggle-password {
+    position: absolute;
+    right: 0;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    color: white;
+}
+
+/* --- ACTIONS --- */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 30px;
+    color: #ccc;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.forgot-pw {
+    color: #ccc;
+    text-decoration: none;
+}
+
+.forgot-pw:hover {
+    color: white;
+}
+
+/* --- BUTTON --- */
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    background-color: #ff4500;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+}
+
+.btn-login:hover {
+    background-color: #ff5722;
+    transform: translateY(-2px);
+}
+
+/* --- SOCIAL SIMPLE --- */
+.divider {
+    text-align: center;
+    margin: 25px 0 20px;
+    font-size: 13px;
+    color: #888;
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08); /* Nền mờ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-decoration: none;
+}
+
+.social-btn i {
+    font-size: 20px;
+    color: white;
+    transition: 0.3s;
+}
+
+.social-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.social-btn:hover i {
+    color: #333; /* Hover chuyển đen */
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        height: auto;
+    }
+    .left-section, .right-section {
+        padding: 30px;
+    }
+    .logo-box {
+        max-width: 150px; /* Mobile logo nhỏ lại */
+    }
+}
