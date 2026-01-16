@@ -141,7 +141,8 @@ function loadSong(song) {
         isPlaying = false;
         if(playIcon) playIcon.className = 'fa-solid fa-play';
 
-        ytPlayer.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${song.youtubeId}?autoplay=1&controls=1&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        ytPlayer.innerHTML = `<iframe width="100%" height="100%" 
+        src="https://www.youtube.com/embed/${song.youtubeId}?autoplay=1&controls=1&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         
         ytPlayer.classList.remove('hidden');
         ytPlayer.classList.remove('mini');
@@ -427,7 +428,8 @@ function updateGreeting() {
     else if (hour >= 12 && hour < 18) { text = "Chiều rồi, thư giãn nhé"; icon = "🌤️"; }
     else if (hour >= 18 && hour < 23) { text = "Buổi tối vui vẻ"; icon = "🌙"; }
     else { text = "Khuya rồi, làm tí Lofi nhé"; icon = "🦉"; }
-    greetingEl.innerHTML = `${icon} ${text}, User`;
+    const MY_NAME = "Manh Tan"
+    greetingEl.innerHTML = `${icon} ${text}, ${MY_NAME}`;
 }
 
 // --- Progress Bar & Volume Logic ---
@@ -573,7 +575,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Chế độ Focus (10 giây không dùng chuột)
-const IDLE_TIME = 120000;
+const IDLE_TIME = 10000;
 let idleTimer;
 const uiLayer = document.getElementById('mainInterface');
 
@@ -614,3 +616,6 @@ window.onload = () => {
     if(volumeFill) volumeFill.style.width = '50%';
     updateGreeting();
 };
+
+
+

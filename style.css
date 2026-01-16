@@ -151,6 +151,30 @@ body, html {
     color: white;
 }
 
+.user-avatar {
+    width: 35px;           /* Chiều rộng ảnh */
+    height: 35px;          /* Chiều cao ảnh */
+    border-radius: 50%;    /* Bo tròn thành hình tròn */
+    object-fit: cover;     /* Cắt ảnh vừa khung, không bị méo */
+    margin-left: 10px;     /* Cách tên ra một chút */
+    border: 2px solid #ff6b00; /* (Tùy chọn) Viền màu cam cho nổi */
+    transition: transform 0.3s;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Hiệu ứng khi di chuột vào */
+.user-profile:hover .user-avatar {
+    transform: scale(1.1); /* Phóng to nhẹ */
+}
+
 /* --- SIDEBAR --- */
 .sidebar {
     grid-area: sidebar;
@@ -799,7 +823,6 @@ body, html {
     text-overflow: ellipsis;
 
 }
-
 
 
 

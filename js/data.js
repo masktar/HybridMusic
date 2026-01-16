@@ -31,13 +31,16 @@ const allPlaylists = {
 
         // 1. DANH SÁCH BÀI HÁT (Giữ nguyên)
         songs: [
-            { name: 'Chắc Ai Đó Sẽ Về', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChacAiDoSeVe.mp3' , img: 'pic/st/st1.jpg'},
+            { name: 'Chắc Ai Đó Sẽ Về', 
+                artist: 'Sơn Tùng M-TP', 
+                src: 'music/mtp/ChacAiDoSeVe.mp3' , 
+                img: 'pic/st/st1.jpg'
+            },
             { name: 'Chúng Ta Không Thuộc Về Nhau', artist: 'Sơn Tùng M-TP', src: 'music/mtp/ChungTaKhongThuocVeNhau.mp3', img: 'pic/st/st1.jpg' },
             { name: 'Em Của Ngày Hôm Qua', artist: 'Sơn Tùng M-TP', src: 'music/mtp/EmCuaNgayHomQua.mp3', img: 'pic/st/st2.jpg' },
             { name: 'Hãy Trao Cho Anh-Sơn Tùng', artist: 'Sơn Tùng M-TP', src: 'music/mtp/HayTraoChoAnh.mp3', img: 'pic/st/st3.jpg' },
             { name: 'Không Phải Dạng Vừa Đâu', artist: 'Sơn Tùng M-TP', src: 'music/mtp/KhongPhaiDangVuaDau.mp3', img: 'pic/st/st2.jpg' },
             { name: 'Nắng Ấm Xa Dần', artist: 'Sơn Tùng M-TP', src: 'music/mtp/NangAmXaDan.mp3', img: 'pic/st/st1.jpg' },
-
         ],
 
         // 2. ALBUMS (Mới thêm)
