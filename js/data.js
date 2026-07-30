@@ -209,7 +209,7 @@ const allPlaylists = {
                 name: "Feel Good Vibes 2025 ☀️ 24/7 Live Stream 🎧 Deep & Chill House Music by We Are Diamond", 
                 artist: "We Are Diamond", 
                 // Mã video Live thứ 2 (nhạc điện tử)
-                youtubeId: "v-KQZ1KZcEo", 
+                youtubeId: "y0hhFkozdBI", 
                 img: "https://i.ytimg.com/vi/v-KQZ1KZcEo/maxresdefault.jpg" 
             }
             
